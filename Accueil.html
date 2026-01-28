@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>PORTFOLIO | Léo JACOB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.36/build/spline-viewer.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --dark: #020617;
+            --light: #f8fafc;
+            --text-muted: #c7d2fe;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        .spline-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+        }
+
+        spline-viewer {
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(rgba(2,6,23,0.7), rgba(2,6,23,0.9));
+            z-index: -1;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .gooey-nav {
+            position: relative;
+            display: flex;
+            gap: 1.2rem;
+            padding: 0.4rem 0.6rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 999px;
+            backdrop-filter: blur(12px);
+            filter: url(#gooey);
+            max-width: fit-content;
+            margin: 0 auto;
+            animation: slideDown 0.6s ease;
+        }
+
+        .nav-item {
+            position: relative;
+            z-index: 2;
+            text-decoration: none;
+            color: #706ed4;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+
+        .indicator {
+            position: absolute;
+            height: 40px;
+            background: #111;
+            border-radius: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.35s ease;
+            z-index: 1;
+        }
+
+        main { 
+            padding-top: 90px;
+        }
+
+        .hero {
+            min-height: calc(100vh - 90px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .portfolio-animation {
+            margin-bottom: 3rem;
+            perspective: 1000px;
+        }
+
+        .neon-text {
+            font-size: 5rem;
+            font-weight: 800;
+            letter-spacing: 1rem;
+            background: linear-gradient(135deg, #ff005e, #00d4ff, #ff005e);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientFlow 4s ease infinite, float 3s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(255, 0, 94, 0.5);
+            transform-style: preserve-3d;
+        }
+
+        .hero-content {
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+
+        .hero > div > p {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.7s both;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease 0.9s both;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.6);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator::before {
+            content: '↓';
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        #apropos {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 8rem 2rem;
+            position: relative;
+        }
+
+        #apropos h2 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease;
+        }
+
+        #apropos p {
+            font-size: 1.2rem;
+            line-height: 2;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            animation: fadeInUp 1s ease;
+        }
+
+        #apropos p a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        #apropos p a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        #apropos p a:hover {
+            color: var(--secondary);
+        }
+
+        #apropos p a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .cv-section {
+            text-align: center;
+            margin: 4rem 0;
+        }
+
+        .cv-preview {
+            margin-top: 4rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .cv-preview h3 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--light);
+        }
+
+        .card {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99,102,241,0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 60px rgba(99,102,241,0.3);
+        }
+
+        .floating-particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float-particle 20s infinite;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #94a3b8;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 1rem;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateX(0); }
+            50% { transform: translateY(-20px) rotateX(10deg); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .neon-text {
+                font-size: 3rem;
+                letter-spacing: 0.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero > div > p {
+                font-size: 1.2rem;
+            }
+
+            #apropos p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="spline-bg">
+    <spline-viewer url="https://prod.spline.design/PZ3znCVOWL0HGcDy/scene.splinecode"></spline-viewer>
+</div>
+<div class="overlay"></div>
+
+<div class="floating-particles" id="particles"></div>
+
+<header>
+    <nav class="gooey-nav">
+        <a href="Accueil.html" class="nav-item">Accueil</a>
+        <a href="Formation.html" class="nav-item">Formation</a>
+        <a href="Stages.html" class="nav-item">Stages</a>
+        <a href="Projets.html" class="nav-item">Projets</a>
+        <a href="Veille.html" class="nav-item">Veille</a>
+        <a href="Contact.html" class="nav-item">Contact</a>
+        <span class="indicator"></span>
+    </nav>
+</header>
+
+<main>
+    <section class="hero">
+        <div class="portfolio-animation">
+            <div class="neon-text">PORTFOLIO</div>
+        </div>
+        
+        <div class="hero-content">
+            <h1>Léo JACOB</h1>
+            <p>Étudiant en BTS SIO SISR | Passionné par les infrastructures réseau</p>
+            <a href="formation.html" class="btn">Découvrir mon profil</a>
+        </div>
+
+        <div class="scroll-indicator"></div>
+    </section>
+
+    <section id="apropos">
+        <h2>À propos de moi</h2>
+        <p>Bonjour à tous !</p>
+        <p>
+            Je m'appelle Léo JACOB, j'ai 19 ans. J'ai effectué un Baccalauréat Général options Mathématiques et NSI (Numérique et Science de l'Informatique).
+        </p>
+        <p>
+            Après obtention de mon bac, je me suis dirigé dans le cursus du <strong><a href="sio.html">BTS SIO SISR</a></strong> du lycée Raoul Follereau de Nevers.
+        </p>
+        
+        <div class="cv-section">
+            <a href="cvleojacob.pdf" class="btn" download>Télécharger mon CV</a>
+        </div>
+        
+        <div class="cv-preview">
+            <h3>Aperçu de mon CV</h3>
+            <div class="card" style="padding: 0; overflow: hidden; max-width: 800px; margin: 0 auto;">
+                <iframe src="cvleojacob.pdf" 
+                        style="width: 100%; height: 600px; border: none; display: block;"
+                        title="Aperçu du CV"></iframe>
+            </div>
+            <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted);">
+                L'aperçu ne s'affiche pas ? <a href="cvleojacob.pdf" style="color: var(--primary); font-weight: bold;">Cliquez ici pour ouvrir le PDF</a>
+            </p>
+        </div>
+    </section>
+</main>
+
+<footer>
+    © 2026 – Portfolio Léo JACOB
+</footer>
+
+<svg width="0" height="0">
+    <filter id="gooey">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+        <feColorMatrix in="blur" mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+            result="gooey"/>
+        <feComposite in="SourceGraphic" in2="gooey" operator="atop"/>
+    </filter>
+</svg>
+
+<script>
+// Navigation
+const nav = document.querySelector('.gooey-nav');
+const indicator = document.querySelector('.indicator');
+const items = document.querySelectorAll('.nav-item');
+
+function moveIndicator(el) {
+    const rect = el.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
+    indicator.style.width = rect.width + 'px';
+    indicator.style.left = rect.left - navRect.left + 'px';
+}
+
+items.forEach(item => {
+    item.addEventListener('mouseenter', () => moveIndicator(item));
+});
+
+moveIndicator(items[0]);
+
+// Particules flottantes
+const particlesContainer = document.getElementById('particles');
+for (let i = 0; i < 30; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.animationDelay = Math.random() * 20 + 's';
+    particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+    particlesContainer.appendChild(particle);
+}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+</script>
+
+</body>
+</html>

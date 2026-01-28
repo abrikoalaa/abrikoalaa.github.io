@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Projets | Léo JACOB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.36/build/spline-viewer.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --dark: #020617;
+            --light: #f8fafc;
+            --text-muted: #c7d2fe;
+            --card-bg: rgba(255,255,255,0.06);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        .spline-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+        }
+
+        spline-viewer {
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(rgba(2,6,23,0.7), rgba(2,6,23,0.9));
+            z-index: -1;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1rem 0;
+        }
+
+        .gooey-nav {
+            position: relative;
+            display: flex;
+            gap: 1.2rem;
+            padding: 0.4rem 0.6rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 999px;
+            backdrop-filter: blur(12px);
+            filter: url(#gooey);
+            max-width: fit-content;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            position: relative;
+            z-index: 2;
+            text-decoration: none;
+            color: #706ed4;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+
+        .indicator {
+            position: absolute;
+            height: 40px;
+            background: #111;
+            border-radius: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.35s ease;
+            z-index: 1;
+        }
+
+        main { 
+            padding-top: 120px; 
+            min-height: 100vh;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .page-header h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: gradientShift 3s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        .projects-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 5rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin: 4rem 0 2rem;
+            position: relative;
+            display: inline-block;
+            animation: fadeInLeft 0.8s ease;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            animation: expandWidth 1s ease forwards;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary), var(--accent));
+            animation: growLine 1.5s ease forwards;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.3s; }
+        .timeline-item:nth-child(4) { animation-delay: 0.4s; }
+
+        .timeline-dot {
+            position: absolute;
+            left: -3.6rem;
+            top: 0.5rem;
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 3px solid var(--dark);
+            box-shadow: 0 0 20px var(--primary);
+            animation: pulse 2s ease infinite;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99,102,241,0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .project-card:hover::before {
+            left: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 60px rgba(99,102,241,0.3);
+        }
+
+        .project-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-icon {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+
+        .project-card h3 {
+            font-size: 1.5rem;
+            color: var(--light);
+            flex: 1;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta-tag {
+            padding: 0.4rem 1rem;
+            background: rgba(99,102,241,0.2);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--primary);
+            border: 1px solid rgba(99,102,241,0.3);
+            transition: all 0.3s;
+        }
+
+        .meta-tag:hover {
+            background: rgba(99,102,241,0.3);
+            transform: scale(1.05);
+        }
+
+        .project-description {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .skills-list {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-badge {
+            padding: 0.3rem 0.8rem;
+            background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(236,72,153,0.2));
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: var(--light);
+            border: 1px solid rgba(139,92,246,0.3);
+        }
+
+        .achievements-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .achievements-list li {
+            padding: 0.5rem 0 0.5rem 1.5rem;
+            position: relative;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .achievements-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #94a3b8;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes expandWidth {
+            from { width: 0%; }
+            to { width: 60%; }
+        }
+
+        @keyframes growLine {
+            from { height: 0; }
+            to { height: 100%; }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 20px var(--primary);
+            }
+            50% {
+                box-shadow: 0 0 30px var(--primary), 0 0 40px var(--primary);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .timeline {
+                padding-left: 2rem;
+            }
+
+            .timeline-dot {
+                left: -2.6rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="spline-bg">
+    <spline-viewer url="https://prod.spline.design/PZ3znCVOWL0HGcDy/scene.splinecode"></spline-viewer>
+</div>
+<div class="overlay"></div>
+
+<header>
+    <nav class="gooey-nav">
+        <a href="Accueil.html" class="nav-item">Accueil</a>
+        <a href="Formation.html" class="nav-item">Formation</a>
+        <a href="Stages.html" class="nav-item">Stages</a>
+        <a href="Projets.html" class="nav-item">Projets</a>
+        <a href="Veille.html" class="nav-item">Veille</a>
+        <a href="Contact.html" class="nav-item">Contact</a>
+        <span class="indicator"></span>
+    </nav>
+</header>
+
+<main>
+    <div class="projects-container">
+        <div class="page-header">
+            <h1>Mes Projets & Réalisations</h1>
+            <p>Découvrez mes expériences professionnelles et projets techniques</p>
+        </div>
+
+        <h2 class="section-title">🎯 Infrastructure Réseau - C2M</h2>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Projets réalisés grâce au stage</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+    <div class="timeline-dot"></div>
+
+    <div class="project-card">
+        <div class="project-header">
+            <span class="project-icon">🌐</span>
+            <h3>Audit de l’Infrastructure Réseau & Couverture WiFi</h3>
+        </div>
+
+        <div class="project-meta">
+            <span class="meta-tag">🔍 Audit</span>
+            <span class="meta-tag">📶 WiFi</span>
+            <span class="meta-tag">🔐 Sécurité</span>
+        </div>
+
+        <p class="project-description">
+            Découverte et analyse complète de l’infrastructure réseau du campus C2M,
+            composé de 6 bâtiments (A, B, C, D, Méca, Self).  
+            Étude approfondie du câblage RJ45 et fibre optique, des baies de brassage,
+            de la couverture WiFi ainsi que des contraintes techniques liées
+            à l’environnement physique des locaux.
+        </p>
+
+        <div class="skills-list">
+            <span class="skill-badge">Analyse réseau</span>
+            <span class="skill-badge">Audit infrastructure</span>
+            <span class="skill-badge">Zyxel Nebula</span>
+            <span class="skill-badge">PoE</span>
+            <span class="skill-badge">Filtrage réseau</span>
+            <span class="skill-badge">Documentation</span>
+        </div>
+
+        <ul class="achievements-list">
+            <li>Cartographie complète de 6 bâtiments interconnectés</li>
+            <li>Analyse des flux RJ45 et fibre optique</li>
+            <li>Identification des contraintes de câblage (RJ45 limité à 50 mètres)</li>
+            <li>Étude de l’impact des murs en béton armé (jusqu’à 40 cm) sur le WiFi</li>
+            <li>Compréhension de la technologie PoE (Power over Ethernet)</li>
+            <li>Configuration et gestion des bornes WiFi Zyxel</li>
+            <li>Analyse du filtrage réseau (mots-clés, listes internationales)</li>
+            <li>Interprétation des voyants LED des points d’accès WiFi</li>
+            <li>Gestion automatique des canaux pour éviter les interférences</li>
+        </ul>
+
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-value">6</span>
+                <span class="stat-label">Bâtiments</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">10+</span>
+                <span class="stat-label">Baies de brassage</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">4</span>
+                <span class="stat-label">NAS</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <span class="project-icon">🎨</span>
+                        <h3>Conception & Cartographie Réseau</h3>
+                    </div>
+                    
+                    <div class="project-meta">
+                        <span class="meta-tag">🛠️ Outils</span>
+                        <span class="meta-tag">📐 Design</span>
+                    </div>
+
+                    <p class="project-description">
+                        Création de schémas réseau professionnels et cartographie complète de l'infrastructure à l'aide d'outils spécialisés. Production de documentation technique au format A3 pour l'impression.
+                    </p>
+
+                    <div class="skills-list">
+                        <span class="skill-badge">draw.io</span>
+                        <span class="skill-badge">napkin.ai</span>
+                        <span class="skill-badge">Cisco Packet Tracer</span>
+                        <span class="skill-badge">Zyxel Nebula</span>
+                    </div>
+
+                    <ul class="achievements-list">
+                        <li>Création de diagrammes réseau avec draw.io (format A3)</li>
+                        <li>Architecture en couches avec napkin.ai</li>
+                        <li>Simulation réseau complète avec Cisco Packet Tracer</li>
+                        <li>Documentation visuelle de l'infrastructure fibre/RJ45/WiFi</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <span class="project-icon">🔧</span>
+                        <h3>Support Technique & Maintenance</h3>
+                    </div>
+                    
+                    <div class="project-meta">
+                        <span class="meta-tag">💻 Hardware</span>
+                        <span class="meta-tag">🔨 Dépannage</span>
+                    </div>
+
+                    <p class="project-description">
+                        Interventions techniques variées sur le matériel informatique de l'établissement avec résolution de problèmes matériels et optimisation des postes de travail.
+                    </p>
+
+                    <div class="skills-list">
+                        <span class="skill-badge">Dépannage</span>
+                        <span class="skill-badge">Cable Management</span>
+                        <span class="skill-badge">Diagnostic</span>
+                    </div>
+
+                    <ul class="achievements-list">
+                        <li>Résolution panne imprimante Lexmark</li>
+                        <li>Diagnostic PC CDR (problèmes de coupures intempestives)</li>
+                        <li>Optimisation espace de travail avec cable management</li>
+                        <li>Remplacement onduleur obsolète (+10 ans)</li>
+                        <li>Recommandations pour renouvellement matériel</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title" style="margin-top: 5rem;">💡 Compétences Développées</h2>
+        
+        <div class="project-card" style="margin-top: 2rem;">
+            <div class="skills-list" style="margin-bottom: 0;">
+                <span class="skill-badge">Infrastructure Réseau</span>
+                
+                <span class="skill-badge">Technologie PoE</span>
+                
+                <span class="skill-badge">Cisco Packet Tracer</span>
+                <span class="skill-badge">Cartographie Réseau</span>
+                <span class="skill-badge">Sécurité WiFi</span>
+                
+                <span class="skill-badge">Gestion des canaux WiFi</span>
+                <span class="skill-badge">Diagnostic Hardware</span>
+                <span class="skill-badge">Documentation Technique</span>
+                <span class="skill-badge">Analyse de Contraintes</span>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    © 2026 – Portfolio Léo JACOB
+</footer>
+
+<svg width="0" height="0">
+    <filter id="gooey">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+        <feColorMatrix in="blur" mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+            result="gooey"/>
+        <feComposite in="SourceGraphic" in2="gooey" operator="atop"/>
+    </filter>
+</svg>
+
+<script>
+const nav = document.querySelector('.gooey-nav');
+const indicator = document.querySelector('.indicator');
+const items = document.querySelectorAll('.nav-item');
+
+function moveIndicator(el) {
+    const rect = el.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
+    indicator.style.width = rect.width + 'px';
+    indicator.style.left = rect.left - navRect.left + 'px';
+}
+
+items.forEach(item => {
+    item.addEventListener('mouseenter', () => moveIndicator(item));
+});
+
+// Position par défaut (page actuelle - Projets)
+moveIndicator(items[3]);
+
+// Animation au scroll
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.timeline-item').forEach(item => {
+    observer.observe(item);
+});
+</script>
+
+</body>
+</html>

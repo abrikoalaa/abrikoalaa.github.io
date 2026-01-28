@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Veille Technologique | Léo JACOB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.36/build/spline-viewer.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --dark: #020617;
+            --light: #f8fafc;
+            --text-muted: #c7d2fe;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        .spline-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+        }
+
+        spline-viewer {
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(rgba(2,6,23,0.7), rgba(2,6,23,0.9));
+            z-index: -1;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1rem 0;
+        }
+
+        .gooey-nav {
+            position: relative;
+            display: flex;
+            gap: 1.2rem;
+            padding: 0.4rem 0.6rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 999px;
+            backdrop-filter: blur(12px);
+            filter: url(#gooey);
+            max-width: fit-content;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            position: relative;
+            z-index: 2;
+            text-decoration: none;
+            color: #706ed4;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+
+        .indicator {
+            position: absolute;
+            height: 40px;
+            background: #111;
+            border-radius: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.35s ease;
+            z-index: 1;
+        }
+
+        main { 
+            padding-top: 120px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 5rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .page-header h1 {
+            font-size: 4rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: gradientShift 3s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        .page-header p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .intro-section {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 4rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .intro-section h3 {
+            text-align: center;
+            font-size: 1.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .intro-section p {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .intro-section strong {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin: 5rem 0 3rem;
+            position: relative;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .section-title .icon {
+            display: inline-block;
+            margin-right: 1rem;
+            font-size: 2.5rem;
+            filter: drop-shadow(0 0 15px currentColor);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .topic-card {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        .topic-card:nth-child(1) { animation-delay: 0.1s; }
+        .topic-card:nth-child(2) { animation-delay: 0.2s; }
+        .topic-card:nth-child(3) { animation-delay: 0.3s; }
+        .topic-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99,102,241,0.15), transparent);
+            transition: left 0.6s;
+        }
+
+        .topic-card:hover::before {
+            left: 100%;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 25px 70px rgba(99,102,241,0.4);
+        }
+
+        .topic-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .topic-card ul {
+            list-style: none;
+        }
+
+        .topic-card ul li {
+            padding: 0.6rem 0 0.6rem 1.8rem;
+            position: relative;
+            color: var(--text-muted);
+            line-height: 1.6;
+            transition: all 0.3s;
+        }
+
+        .topic-card ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .topic-card ul li:hover {
+            color: var(--light);
+            transform: translateX(5px);
+        }
+
+        .topic-card ul li:hover::before {
+            color: var(--accent);
+        }
+
+        .sources-section {
+            margin-top: 5rem;
+        }
+
+        .sources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .source-card {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s;
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        .source-card:nth-child(1) { animation-delay: 0.6s; }
+        .source-card:nth-child(2) { animation-delay: 0.7s; }
+        .source-card:nth-child(3) { animation-delay: 0.8s; }
+
+        .source-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--success);
+            box-shadow: 0 20px 50px rgba(16,185,129,0.3);
+        }
+
+        .source-card h4 {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+        }
+
+        .source-card ul {
+            list-style: none;
+        }
+
+        .source-card ul li {
+            margin-bottom: 1rem;
+        }
+
+        .source-card ul li a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+            position: relative;
+        }
+
+        .source-card ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .source-card ul li a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .source-card ul li a:hover::after {
+            width: 100%;
+        }
+
+        .download-section {
+            text-align: center;
+            margin-top: 5rem;
+            padding: 3rem;
+            background: rgba(255,255,255,0.04);
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: fadeInUp 0.8s ease 0.9s both;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.6);
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #94a3b8;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="spline-bg">
+    <spline-viewer url="https://prod.spline.design/PZ3znCVOWL0HGcDy/scene.splinecode"></spline-viewer>
+</div>
+<div class="overlay"></div>
+
+<header>
+    <nav class="gooey-nav">
+        <a href="Accueil.html" class="nav-item">Accueil</a>
+        <a href="Formation.html" class="nav-item">Formation</a>
+        <a href="Stages.html" class="nav-item">Stages</a>
+        <a href="Projets.html" class="nav-item">Projets</a>
+        <a href="Veille.html" class="nav-item">Veille</a>
+        <a href="Contact.html" class="nav-item">Contact</a>
+        <span class="indicator"></span>
+    </nav>
+</header>
+
+<main>
+    <div class="container">
+        <div class="page-header">
+            <h1>Veille Technologique</h1>
+            <p>Surveillance et analyse des évolutions techniques dans le domaine IT</p>
+        </div>
+
+        <div class="intro-section">
+            <h3>Qu'est-ce que la veille technologique ?</h3>
+            <p>
+                La veille technologique consiste à surveiller, analyser et exploiter les évolutions
+                techniques afin d'anticiper les changements et d'adapter les systèmes informatiques.
+                Elle permet aux professionnels IT de rester à jour, d'améliorer la sécurité
+                et d'optimiser les infrastructures.
+            </p>
+            <p>
+                Dans le cadre de mon BTS SIO, j'ai mis en place une veille
+                <strong>manuelle (Pull)</strong> et <strong>automatique (Push)</strong>.
+            </p>
+        </div>
+
+        <h2 class="section-title">
+            <span class="icon">🔍</span>
+            Veille Manuelle (Pull)
+        </h2>
+
+        <div class="cards-grid">
+            <div class="topic-card">
+                <h3>🧠 GPU NVIDIA & Infrastructures IA</h3>
+                <ul>
+                    <li>GPU : calcul parallèle massif (CPU vs GPU)</li>
+                    <li>Usages : IA, Machine Learning, Big Data, HPC</li>
+                    <li>Virtualisation GPU (vGPU, VDI)</li>
+                    <li>Frameworks : CUDA, TensorFlow, PyTorch</li>
+                    <li>Gammes professionnelles : H100, H200</li>
+                </ul>
+            </div>
+
+            <div class="topic-card">
+                <h3>🏢 Enjeux pour les services IT</h3>
+                <ul>
+                    <li>Intégration en datacenter (énergie, refroidissement)</li>
+                    <li>Administration : nvidia-smi, supervision GPU</li>
+                    <li>Orchestration avec Kubernetes</li>
+                    <li>Coûts élevés et rentabilité à long terme</li>
+                    <li>Souveraineté technologique européenne</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2 class="section-title">
+            <span class="icon">⚙️</span>
+            Veille Automatique (Push)
+        </h2>
+
+        <div class="cards-grid">
+            <div class="topic-card">
+                <h3>🔔 Google Alertes</h3>
+                <ul>
+                    <li>Virtualisation</li>
+                    <li>Conteneurisation</li>
+                    <li>GPU & Datacenters</li>
+                    <li>Vulnérabilités et correctifs</li>
+                </ul>
+            </div>
+
+            <div class="topic-card">
+                <h3>💻 Oracle VirtualBox</h3>
+                <ul>
+                    <li>Hyperviseur de type 2</li>
+                    <li>Utilisé en BTS SIO</li>
+                    <li>Suivi des mises à jour</li>
+                    <li>Compatibilité Windows / Linux</li>
+                    <li>Alertes sécurité (CERT-FR)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="sources-section">
+            <h2 class="section-title">
+                <span class="icon">📚</span>
+                Sources Utilisées
+            </h2>
+            
+            <div class="sources-grid">
+                <div class="source-card">
+                    <h4>📰 Sites spécialisés</h4>
+                    <ul>
+                        <li><a href="https://www.lemondeinformatique.fr" target="_blank">Le Monde Informatique</a></li>
+                        <li><a href="https://www.zdnet.fr" target="_blank">ZDNet France</a></li>
+                        <li><a href="https://www.journaldunet.com" target="_blank">Journal du Net</a></li>
+                        <li><a href="https://arxiv.org" target="_blank">ArXiv (recherche scientifique)</a></li>
+                    </ul>
+                </div>
+
+                <div class="source-card">
+                    <h4>🔐 Sécurité</h4>
+                    <ul>
+                        <li><a href="https://www.cert.ssi.gouv.fr" target="_blank">CERT-FR (ANSSI)</a></li>
+                        <li><a href="https://cve.mitre.org" target="_blank">CVE Mitre</a></li>
+                        <li><a href="https://www.zataz.com" target="_blank">Zataz (actualité cybersécurité)</a></li>
+                    </ul>
+                </div>
+
+                <div class="source-card">
+                    <h4>🌐 Réseaux & médias</h4>
+                    <ul>
+                        <li><a href="https://twitter.com/nvidia" target="_blank">Twitter / X — NVIDIA</a></li>
+                        <li><a href="https://twitter.com/NvidiaAI" target="_blank">Twitter / X — NVIDIA AI</a></li>
+                        <li><a href="https://developer.nvidia.com" target="_blank">NVIDIA Developer</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="download-section">
+            <h3 style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--light);">Documentation complète</h3>
+            <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 1.1rem;">Téléchargez ma veille technologique détaillée au format PDF</p>
+            <a href="Veille_odf2.pdf" class="btn">
+                📥 Télécharger ma veille complète (PDF)
+            </a>
+        </div>
+    </div>
+</main>
+
+<footer>
+    © 2026 – Portfolio Léo JACOB
+</footer>
+
+<svg width="0" height="0">
+    <filter id="gooey">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+        <feColorMatrix in="blur" mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+            result="gooey"/>
+        <feComposite in="SourceGraphic" in2="gooey" operator="atop"/>
+    </filter>
+</svg>
+
+<script>
+const nav = document.querySelector('.gooey-nav');
+const indicator = document.querySelector('.indicator');
+const items = document.querySelectorAll('.nav-item');
+
+function moveIndicator(el) {
+    const rect = el.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
+    indicator.style.width = rect.width + 'px';
+    indicator.style.left = rect.left - navRect.left + 'px';
+}
+
+items.forEach(item => {
+    item.addEventListener('mouseenter', () => moveIndicator(item));
+});
+
+moveIndicator(items[4]);
+</script>
+
+</body>
+</html>

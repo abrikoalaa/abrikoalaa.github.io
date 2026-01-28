@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>BTS SIO | Léo JACOB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.36/build/spline-viewer.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --dark: #020617;
+            --light: #f8fafc;
+            --text-muted: #c7d2fe;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        .spline-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+        }
+
+        spline-viewer {
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(rgba(2,6,23,0.7), rgba(2,6,23,0.9));
+            z-index: -1;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1rem 0;
+        }
+
+        .gooey-nav {
+            position: relative;
+            display: flex;
+            gap: 1.2rem;
+            padding: 0.4rem 0.6rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 999px;
+            backdrop-filter: blur(12px);
+            filter: url(#gooey);
+            max-width: fit-content;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            position: relative;
+            z-index: 2;
+            text-decoration: none;
+            color: #706ed4;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+
+        .indicator {
+            position: absolute;
+            height: 40px;
+            background: #111;
+            border-radius: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.35s ease;
+            z-index: 1;
+        }
+
+        main { 
+            padding-top: 90px;
+        }
+
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            animation: gradientShift 3s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-bottom: 5rem;
+        }
+
+        .option-card {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(12px);
+            border-radius: 30px;
+            padding: 3rem;
+            border: 2px solid transparent;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        .option-card:nth-child(1) { animation-delay: 0.2s; }
+        .option-card:nth-child(2) { animation-delay: 0.4s; }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99,102,241,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .option-card:hover::before {
+            left: 100%;
+        }
+
+        .option-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 30px 80px rgba(99,102,241,0.5);
+        }
+
+        .option-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            filter: drop-shadow(0 0 20px currentColor);
+        }
+
+        .option-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+        }
+
+        .option-card h4 {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: normal;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-card p {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .option-card ul {
+            list-style: none;
+        }
+
+        .option-card ul li {
+            padding: 0.8rem 0 0.8rem 2rem;
+            position: relative;
+            color: var(--text-muted);
+            line-height: 1.6;
+            transition: all 0.3s;
+        }
+
+        .option-card ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .option-card ul li:hover {
+            color: var(--light);
+            transform: translateX(8px);
+        }
+
+        .careers-section {
+            margin: 5rem 0;
+        }
+
+        .careers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .career-card {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s;
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        .career-card:nth-child(1) { animation-delay: 0.6s; }
+        .career-card:nth-child(2) { animation-delay: 0.7s; }
+
+        .career-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 50px rgba(236,72,153,0.3);
+        }
+
+        .career-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+        }
+
+        .career-card ul {
+            list-style: none;
+        }
+
+        .career-card ul li {
+            padding: 0.6rem 0 0.6rem 1.8rem;
+            position: relative;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .career-card ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .cybersecurity-section {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(12px);
+            border-radius: 30px;
+            padding: 4rem;
+            margin: 5rem 0;
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: fadeInUp 0.8s ease 0.8s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cybersecurity-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .cybersecurity-section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .cybersecurity-section p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            line-height: 2;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .skills-section {
+            margin: 5rem 0;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-card {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s;
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        .skill-card:nth-child(1) { animation-delay: 1s; }
+        .skill-card:nth-child(2) { animation-delay: 1.1s; }
+        .skill-card:nth-child(3) { animation-delay: 1.2s; }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--secondary);
+            box-shadow: 0 20px 50px rgba(139,92,246,0.3);
+        }
+
+        .skill-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .skill-card ul {
+            list-style: none;
+        }
+
+        .skill-card ul li {
+            padding: 0.6rem 0 0.6rem 1.8rem;
+            position: relative;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .skill-card ul li::before {
+            content: '◆';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-size: 0.8rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #94a3b8;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @media (max-width: 968px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="spline-bg">
+    <spline-viewer url="https://prod.spline.design/PZ3znCVOWL0HGcDy/scene.splinecode"></spline-viewer>
+</div>
+<div class="overlay"></div>
+
+<header>
+    <nav class="gooey-nav">
+        <a href="Accueil.html" class="nav-item">Accueil</a>
+        <a href="Formation.html" class="nav-item">Formation</a>
+        <a href="Stages.html" class="nav-item">Stages</a>
+        <a href="Projets.html" class="nav-item">Projets</a>
+        <a href="Veille.html" class="nav-item">Veille</a>
+        <a href="Contact.html" class="nav-item">Contact</a>
+        <span class="indicator"></span>
+    </nav>
+</header>
+
+<main>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Qu'est-ce que le BTS SIO ?</h1>
+            <p>
+                Le Brevet de Technicien Supérieur aux Services Informatiques aux Organisations s'adresse à ceux qui souhaitent se former en deux ans aux métiers d'administrateur réseau ou de développeur.
+            </p>
+        </div>
+    </section>
+
+    <div class="container">
+        <h2 class="section-title">Les deux options du BTS SIO</h2>
+        
+        <div class="options-grid">
+            <div class="option-card">
+                <span class="option-icon">💻</span>
+                <h3>Option SISR</h3>
+                <h4>Solutions d'Infrastructure, Systèmes et Réseaux</h4>
+                <p>
+                    La spécialité SISR permet d'apprendre un métier qui consiste à installer, configurer et gérer les équipements et les réseaux informatiques. Cela signifie intervenir sur la conception, la mise en place, le déploiement et la maintenance de programmes destinés à la gestion au sein d'une organisation.
+                </p>
+                <ul>
+                    <li>Administration des systèmes et réseaux</li>
+                    <li>Configuration d'équipements réseaux</li>
+                    <li>Gestion de l'infrastructure informatique</li>
+                    <li>Sécurisation des systèmes</li>
+                </ul>
+            </div>
+
+            <div class="option-card">
+                <span class="option-icon">⚙️</span>
+                <h3>Option SLAM</h3>
+                <h4>Solutions Logiciels et Applications Métiers</h4>
+                <p>
+                    La spécialité SLAM est plus orientée développement. Elle permet d'apprendre à réaliser des logiciels, sites web, applications mobiles, mais aussi de rédiger des documentations techniques associées. De plus, elle permet d'apprendre à former des utilisateurs pour gérer la maintenance des applications.
+                </p>
+                <ul>
+                    <li>Développement d'applications</li>
+                    <li>Création de sites web dynamiques</li>
+                    <li>Applications mobiles</li>
+                    <li>Documentation technique</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="careers-section">
+            <h2 class="section-title">Les débouchés professionnels</h2>
+            
+            <div class="careers-grid">
+                <div class="career-card">
+                    <h3>Débouchés suite à l'option SISR</h3>
+                    <ul>
+                        <li>Technicien de production</li>
+                        <li>Technicien d'infrastructure</li>
+                        <li>Technicien réseau et télécoms</li>
+                        <li>Technicien systèmes et réseaux</li>
+                        <li>Administrateur systèmes et réseaux</li>
+                        <li>Support systèmes et réseaux</li>
+                        <li>Informaticien support et déploiement</li>
+                    </ul>
+                </div>
+
+                <div class="career-card">
+                    <h3>Débouchés suite à l'option SLAM</h3>
+                    <ul>
+                        <li>Développeur d'applications</li>
+                        <li>Analyste d'exploitation informatique</li>
+                        <li>Développeur d'application mobile</li>
+                        <li>Programmeur d'applications</li>
+                        <li>Développeur informatique</li>
+                        <li>Développeur web</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="cybersecurity-section">
+            <h2>🔐 La Cybersécurité</h2>
+            <p>
+                Pour répondre au besoin actuel du domaine informatique, la sécurité des données professionnelles et personnelles est devenue l'un des points primordiaux de cette formation. Au vu de l'augmentation des vols de données et de l'évolution des techniques d'arnaques, les entreprises souhaitent développer la cybersécurité.
+            </p>
+            <p>
+                C'est à cet effet que le BTS SIO s'est réformé et est maintenant plus axé sur la sécurité. Les deux sections apprennent donc à sécuriser leurs codes pour les SLAM et l'infrastructure réseau pour les SISR.
+            </p>
+        </div>
+
+        <div class="skills-section">
+            <h2 class="section-title">Compétences développées durant la formation</h2>
+            
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>🎯 Compétences techniques</h3>
+                    <ul>
+                        <li>Administration systèmes Windows/Linux</li>
+                        <li>Configuration réseau et routage</li>
+                        <li>Virtualisation (VMware, Hyper-V)</li>
+                        <li>Sécurisation des infrastructures</li>
+                        <li>Gestion de bases de données</li>
+                    </ul>
+                </div>
+
+                <div class="skill-card">
+                    <h3>🤝 Compétences transversales</h3>
+                    <ul>
+                        <li>Gestion de projet informatique</li>
+                        <li>Communication professionnelle</li>
+                        <li>Travail en équipe</li>
+                        <li>Documentation technique</li>
+                        <li>Support utilisateur</li>
+                    </ul>
+                </div>
+
+                <div class="skill-card">
+                    <h3>📊 Compétences organisationnelles</h3>
+                    <ul>
+                        <li>Analyse des besoins</li>
+                        <li>Planification et organisation</li>
+                        <li>Veille technologique</li>
+                        <li>Gestion du temps</li>
+                        <li>Résolution de problèmes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    © 2026 – Portfolio Léo JACOB
+</footer>
+
+<svg width="0" height="0">
+    <filter id="gooey">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+        <feColorMatrix in="blur" mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+            result="gooey"/>
+        <feComposite in="SourceGraphic" in2="gooey" operator="atop"/>
+    </filter>
+</svg>
+
+<script>
+const nav = document.querySelector('.gooey-nav');
+const indicator = document.querySelector('.indicator');
+const items = document.querySelectorAll('.nav-item');
+
+function moveIndicator(el) {
+    const rect = el.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
+    indicator.style.width = rect.width + 'px';
+    indicator.style.left = rect.left - navRect.left + 'px';
+}
+
+items.forEach(item => {
+    item.addEventListener('mouseenter', () => moveIndicator(item));
+});
+
+moveIndicator(items[0]);
+</script>
+
+</body>
+</html>

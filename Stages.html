@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Stages | Léo JACOB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.36/build/spline-viewer.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --dark: #020617;
+            --light: #f8fafc;
+            --text-muted: #c7d2fe;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        .spline-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+        }
+
+        spline-viewer {
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(rgba(2,6,23,0.7), rgba(2,6,23,0.9));
+            z-index: -1;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1rem 0;
+        }
+
+        .gooey-nav {
+            position: relative;
+            display: flex;
+            gap: 1.2rem;
+            padding: 0.4rem 0.6rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 999px;
+            backdrop-filter: blur(12px);
+            filter: url(#gooey);
+            max-width: fit-content;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            position: relative;
+            z-index: 2;
+            text-decoration: none;
+            color: #706ed4;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s;
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+
+        .indicator {
+            position: absolute;
+            height: 40px;
+            background: #111;
+            border-radius: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.35s ease;
+            z-index: 1;
+        }
+
+        main { 
+            padding-top: 120px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 5rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .page-header h1 {
+            font-size: 4rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: gradientShift 3s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        .page-header p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+        }
+
+        .company-banner {
+            background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.15));
+            backdrop-filter: blur(12px);
+            border-radius: 30px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: fadeInUp 0.8s ease 0.2s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .company-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+        }
+
+        .info-icon {
+            font-size: 1.5rem;
+            filter: drop-shadow(0 0 10px var(--primary));
+        }
+
+        .info-content h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .info-content p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .missions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .mission-card {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        .mission-card:nth-child(1) { animation-delay: 0.3s; }
+        .mission-card:nth-child(2) { animation-delay: 0.4s; }
+        .mission-card:nth-child(3) { animation-delay: 0.5s; }
+        .mission-card:nth-child(4) { animation-delay: 0.6s; }
+        .mission-card:nth-child(5) { animation-delay: 0.7s; }
+        .mission-card:nth-child(6) { animation-delay: 0.8s; }
+
+        .mission-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 60px rgba(99,102,241,0.3);
+        }
+
+        .mission-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mission-card ul {
+            list-style: none;
+        }
+
+        .mission-card ul li {
+            padding: 0.4rem 0 0.4rem 1.5rem;
+            position: relative;
+            color: var(--text-muted);
+            line-height: 1.5;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .mission-card ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .mission-card ul li:hover {
+            color: var(--light);
+            transform: translateX(5px);
+        }
+
+        .skills-section {
+            margin: 3rem 0;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-category {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.4s;
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        .skill-category:nth-child(1) { animation-delay: 0.9s; }
+        .skill-category:nth-child(2) { animation-delay: 1s; }
+        .skill-category:nth-child(3) { animation-delay: 1.1s; }
+
+        .skill-category:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary);
+            box-shadow: 0 15px 40px rgba(139,92,246,0.3);
+        }
+
+        .skill-category h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--light);
+        }
+
+        .skill-category ul {
+            list-style: none;
+        }
+
+        .skill-category ul li {
+            padding: 0.5rem 0 0.5rem 1.5rem;
+            position: relative;
+            color: var(--text-muted);
+        }
+
+        .skill-category ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .highlights-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .highlight-card {
+            background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(236,72,153,0.1));
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255,255,255,0.15);
+            animation: fadeInUp 0.8s ease both;
+        }
+
+        .highlight-card:nth-child(1) { animation-delay: 1.2s; }
+        .highlight-card:nth-child(2) { animation-delay: 1.3s; }
+
+        .highlight-card h4 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .highlight-card p {
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .highlight-card strong {
+            color: var(--light);
+        }
+
+        .conclusion-card {
+            background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.15));
+            backdrop-filter: blur(12px);
+            border-radius: 30px;
+            padding: 3.5rem;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.15);
+            margin-top: 4rem;
+            animation: fadeInUp 0.8s ease 1.4s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .conclusion-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .conclusion-card h3 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--light);
+        }
+
+        .conclusion-card p {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: var(--text-muted);
+            max-width: 900px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .conclusion-card .highlight-text {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #94a3b8;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .company-info {
+                grid-template-columns: 1fr;
+            }
+
+            .missions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="spline-bg">
+    <spline-viewer url="https://prod.spline.design/PZ3znCVOWL0HGcDy/scene.splinecode"></spline-viewer>
+</div>
+<div class="overlay"></div>
+
+<header>
+    <nav class="gooey-nav">
+        <a href="Accueil.html" class="nav-item">Accueil</a>
+        <a href="Formation.html" class="nav-item">Formation</a>
+        <a href="Stages.html" class="nav-item">Stages</a>
+        <a href="Projets.html" class="nav-item">Projets</a>
+        <a href="Veille.html" class="nav-item">Veille</a>
+        <a href="Contact.html" class="nav-item">Contact</a>
+        <span class="indicator"></span>
+    </nav>
+</header>
+
+<main>
+    <div class="container">
+        <div class="page-header">
+            <h1>Expériences Professionnelles</h1>
+            <p>Stage BTS SIO 1ère année</p>
+        </div>
+
+        <div class="company-banner">
+            <h3 style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--light);">🚗 Roulez Jeunesse - <a href="Stages1.html" style="color: white; font-weight: bold;">Cliquez ici pour voir</a></h3>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Auto-école • Sancoins (18600)</p>
+            
+            <div class="company-info">
+                <div class="info-item">
+                    <span class="info-icon">📍</span>
+                    <div class="info-content">
+                        <h4>LOCALISATION</h4>
+                        <p>18 rue du Commerce<br>18600 Sancoins</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <span class="info-icon">🎓</span>
+                    <div class="info-content">
+                        <h4>MAÎTRE DE STAGE</h4>
+                        <p><strong>Lovelye Wargniez</strong><br>Gérante de l'auto-école</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-icon">💼</span>
+                    <div class="info-content">
+                        <h4>SECTEUR</h4>
+                        <p>Formation au permis B, conduite accompagnée, sécurité routière</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-icon">🎯</span>
+                    <div class="info-content">
+                        <h4>MISSION PRINCIPALE</h4>
+                        <p>Développement et amélioration de la partie informatique et communication digitale</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+        <div class="page-header">
+            <p>Stage BTS SIO 2ème année</p>
+        </div>
+
+        <div class="company-banner">
+            <h3 style="font-size: 2rem; margin-bottom: 0.5rem; color: var(--light);">🏢 Campus Métiers Marzy - <a href="Stages2.html" style="color: white; font-weight: bold;">Cliquez ici pour voir</a></h3>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">CFA • Marzy (58180)</p>
+            
+            <div class="company-info">
+                <div class="info-item">
+                    <span class="info-icon">📍</span>
+                    <div class="info-content">
+                        <h4>LOCALISATION</h4>
+                        <p>21 rue des Carrières<br>58180 Marzy</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <span class="info-icon">🎓</span>
+                    <div class="info-content">
+                        <h4>MAÎTRE DE STAGE</h4>
+                        <p><strong>Jean-Luc Doussot</strong><br>Responsable Informatique</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-icon">💼</span>
+                    <div class="info-content">
+                        <h4>SECTEUR</h4>
+                        <p>Formation des apprentis et adultes aux métiers des secteurs professionnels allant du CAP au BAC+2</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-icon">🎯</span>
+                    <div class="info-content">
+                        <h4>MISSION PRINCIPALE</h4>
+                        <p>Audit de l'Infrastructure Réseau, Maintenance et Support Utilisateur, Routage/Sécurité</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+</main>
+
+<footer>
+    © 2026 – Portfolio Léo JACOB
+</footer>
+
+<svg width="0" height="0">
+    <filter id="gooey">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+        <feColorMatrix in="blur" mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+            result="gooey"/>
+        <feComposite in="SourceGraphic" in2="gooey" operator="atop"/>
+    </filter>
+</svg>
+
+<script>
+const nav = document.querySelector('.gooey-nav');
+const indicator = document.querySelector('.indicator');
+const items = document.querySelectorAll('.nav-item');
+
+function moveIndicator(el) {
+    const rect = el.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
+    indicator.style.width = rect.width + 'px';
+    indicator.style.left = rect.left - navRect.left + 'px';
+}
+
+items.forEach(item => {
+    item.addEventListener('mouseenter', () => moveIndicator(item));
+});
+
+moveIndicator(items[2]);
+</script>
+
+</body>
+</html>
