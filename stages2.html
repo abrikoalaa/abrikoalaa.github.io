@@ -43,6 +43,7 @@
             z-index: -1;
         }
 
+        /* ── HEADER & DESKTOP NAV ── */
         header {
             position: fixed;
             top: 0;
@@ -89,6 +90,124 @@
             z-index: 1;
         }
 
+        /* ── HAMBURGER BUTTON (mobile only) ── */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            width: 44px;
+            height: 44px;
+            background: rgba(255,255,255,0.95);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            margin: 0 auto;
+            backdrop-filter: blur(12px);
+            transition: background 0.3s;
+            z-index: 200;
+            position: relative;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #706ed4;
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* ── MOBILE MENU OVERLAY ── */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 150;
+            background: rgba(2, 6, 23, 0.97);
+            backdrop-filter: blur(20px);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+
+        .mobile-menu.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .mobile-menu a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 2rem;
+            font-weight: 700;
+            padding: 0.8rem 2rem;
+            border-radius: 16px;
+            transition: all 0.3s;
+            position: relative;
+            letter-spacing: -0.5px;
+        }
+
+        .mobile-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        .mobile-menu a:hover,
+        .mobile-menu a.active {
+            color: var(--light);
+        }
+
+        .mobile-menu a:hover::after,
+        .mobile-menu a.active::after {
+            width: 60%;
+        }
+
+        /* stagger animation for mobile links */
+        .mobile-menu a {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s;
+        }
+
+        .mobile-menu.visible a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-menu.visible a:nth-child(1) { transition-delay: 0.05s; }
+        .mobile-menu.visible a:nth-child(2) { transition-delay: 0.10s; }
+        .mobile-menu.visible a:nth-child(3) { transition-delay: 0.15s; }
+        .mobile-menu.visible a:nth-child(4) { transition-delay: 0.20s; }
+        .mobile-menu.visible a:nth-child(5) { transition-delay: 0.25s; }
+        .mobile-menu.visible a:nth-child(6) { transition-delay: 0.30s; }
+
+        /* ── MAIN CONTENT ── */
         main { 
             padding-top: 120px;
             min-height: 100vh;
@@ -390,151 +509,81 @@
             border-top: 1px solid rgba(255,255,255,0.1);
         }
 
+        /* ── ANIMATIONS ── */
         @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: scale(0.95); }
+            to   { opacity: 1; transform: scale(1); }
         }
-
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(-30px); }
+            to   { opacity: 1; transform: translateX(0); }
         }
-
         @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(30px); }
+            to   { opacity: 1; transform: translateX(0); }
         }
-
         @keyframes gradientShift {
             0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            50%      { background-position: 100% 50%; }
         }
-
         @keyframes borderFlow {
-            0% { background-position: 0% 50%; }
+            0%   { background-position: 0% 50%; }
             100% { background-position: 200% 50%; }
         }
-
         @keyframes expandWidth {
             from { width: 0; }
-            to { width: 100%; }
+            to   { width: 100%; }
         }
-
         @keyframes pulse {
             0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.1); }
+            50%       { opacity: 0.5; transform: scale(1.1); }
         }
 
-        @media (max-width: 968px) {
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            /* hide desktop nav, show hamburger */
+            .gooey-nav   { display: none; }
+            .hamburger    { display: flex; }
+            .mobile-menu  { display: flex; }
+
+            main { padding-top: 90px; }
+
             .stage-wrapper {
-                padding: 2rem;
+                padding: 1.8rem 1.2rem;
+                border-radius: 24px;
             }
 
-            .stage-title {
-                font-size: 2.5rem;
-            }
-
-            .skills-columns {
-                grid-template-columns: 1fr;
-            }
+            .stage-title   { font-size: 2rem; }
+            .stage-company { font-size: 1.3rem; }
 
             .stage-meta {
                 flex-direction: column;
+                align-items: center;
                 gap: 0.5rem;
             }
-            
+
+            .section-title { font-size: 1.3rem; }
+
+            .skills-columns {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .mission-item:hover { transform: none; }
+
+            .conclusion-text { font-size: 1rem; padding: 1.2rem; }
         }
-        .menu-toggle{
-    display:none;
-    position:fixed;
-    top:18px;
-    right:20px;
-    font-size:28px;
-    background:rgba(255,255,255,0.9);
-    color:#111;
-    border:none;
-    border-radius:10px;
-    padding:6px 12px;
-    cursor:pointer;
-    z-index:200;
-    backdrop-filter: blur(10px);
-}
 
-/* MOBILE */
-@media (max-width:768px){
-
-    header{
-        padding:0.5rem 0;
-    }
-
-    .menu-toggle{
-        display:block;
-    }
-
-    .gooey-nav{
-        position:fixed;
-        top:70px;
-        left:50%;
-        transform:translateX(-50%);
-        flex-direction:column;
-        gap:0.8rem;
-        width:90%;
-        padding:1.2rem;
-        border-radius:20px;
-        display:none;
-        filter:none; /* désactive l'effet gooey sur mobile pour éviter les bugs */
-    }
-
-    .gooey-nav.active{
-        display:flex;
-        animation:fadeInScale 0.3s ease;
-    }
-
-    .nav-item{
-        text-align:center;
-        padding:0.8rem;
-        font-size:1.1rem;
-        border-radius:10px;
-    }
-
-    .nav-item:hover{
-        background:rgba(99,102,241,0.1);
-    }
-
-    .indicator{
-        display:none;
-    }
-
-}
+        @media (max-width: 968px) and (min-width: 769px) {
+            .stage-wrapper { padding: 2rem; }
+            .stage-title   { font-size: 2.5rem; }
+            .skills-columns { grid-template-columns: 1fr; }
+            .stage-meta     { flex-direction: column; gap: 0.5rem; }
+        }
     </style>
 </head>
 <body>
@@ -543,158 +592,148 @@
     <spline-viewer url="https://prod.spline.design/PZ3znCVOWL0HGcDy/scene.splinecode"></spline-viewer>
 </div>
 <div class="overlay"></div>
+
 <header>
-    <button class="menu-toggle">☰</button>
+    <!-- Desktop nav -->
     <nav class="gooey-nav">
-        <a href="index.html" class="nav-item">Accueil</a>
+        <a href="index.html"     class="nav-item">Accueil</a>
         <a href="formation.html" class="nav-item">Formation</a>
-        <a href="stages.html" class="nav-item">Stages</a>
-        <a href="projets.html" class="nav-item">Projets</a>
-        <a href="veille.html" class="nav-item">Veille</a>
-        <a href="contact.html" class="nav-item">Contact</a>
+        <a href="stages.html"    class="nav-item">Stages</a>
+        <a href="projets.html"   class="nav-item">Projets</a>
+        <a href="veille.html"    class="nav-item">Veille</a>
+        <a href="contact.html"   class="nav-item">Contact</a>
         <span class="indicator"></span>
     </nav>
+
+    <!-- Mobile hamburger -->
+    <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
 </header>
+
+<!-- Mobile full-screen menu -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Accueil</a>
+    <a href="formation.html">Formation</a>
+    <a href="stages.html" class="active">Stages</a>
+    <a href="projets.html">Projets</a>
+    <a href="veille.html">Veille</a>
+    <a href="contact.html">Contact</a>
+</div>
 
 <main>
     <div class="container">
         <div class="stage-wrapper">
-    <div class="stage-header">
-        <h1 class="stage-title">Stage en Entreprise</h1>
-        <h2 class="stage-company">🏫 Campus des Métiers de Marzy (A.P.R.A.FO – C2M)</h2>
-        <div class="stage-meta">
-            <span class="meta-item"><span class="meta-icon">📍</span> Marzy (58180)</span>
-            <span class="meta-item"><span class="meta-icon">🎓</span> BTS SIO 2ème année</span>
-            <span class="meta-item"><span class="meta-icon">👤</span> Jean-Luc Doussot</span>
-        </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="content-section">
-        <h3 class="section-title">🎯 Contexte & Objectifs</h3>
-        <div class="section-content">
-            <p>Ce stage s'est déroulé au <strong>Campus des Métiers de Marzy (C2M)</strong>, un établissement de formation regroupant plusieurs bâtiments et une infrastructure réseau complexe. 
-            L'objectif principal était de participer à <strong>l'analyse, l'amélioration et la maintenance de l'infrastructure informatique</strong> du campus.</p>
-
-            <p>Durant ce stage, j'ai travaillé aux côtés du responsable informatique afin d'étudier l'architecture réseau existante, proposer des améliorations techniques et participer à des interventions concrètes de maintenance et de déploiement informatique.</p>
-        </div>
-    </div>
-
-    <div class="content-section">
-        <h3 class="section-title">💼 Missions Réalisées</h3>
-        <div class="missions-flow">
-
-            <div class="mission-item">
-                <div class="mission-title">Analyse de l'infrastructure réseau</div>
-                <div class="mission-desc">
-                    Étude complète de l'architecture réseau du campus comprenant plusieurs bâtiments, analyse des liaisons RJ45 et fibre, identification des contraintes techniques et réalisation de schémas réseau.
+            <div class="stage-header">
+                <h1 class="stage-title">Stage en Entreprise</h1>
+                <h2 class="stage-company">🏫 Campus des Métiers de Marzy (A.P.R.A.FO – C2M)</h2>
+                <div class="stage-meta">
+                    <span class="meta-item"><span class="meta-icon">📍</span> Marzy (58180)</span>
+                    <span class="meta-item"><span class="meta-icon">🎓</span> BTS SIO 2ème année</span>
+                    <span class="meta-item"><span class="meta-icon">👤</span> Jean-Luc Doussot</span>
                 </div>
             </div>
 
-            <div class="mission-item">
-                <div class="mission-title">Projet de segmentation VLAN</div>
-                <div class="mission-desc">
-                    Conception d'une architecture réseau segmentée (VLAN Administratif, Pédagogique et Wi-Fi) afin d'améliorer la sécurité et l'organisation des flux réseau.
+            <div class="divider"></div>
+
+            <div class="content-section">
+                <h3 class="section-title">🎯 Contexte & Objectifs</h3>
+                <div class="section-content">
+                    <p>Ce stage s'est déroulé au <strong>Campus des Métiers de Marzy (C2M)</strong>, un établissement de formation regroupant plusieurs bâtiments et une infrastructure réseau complexe. 
+                    L'objectif principal était de participer à <strong>l'analyse, l'amélioration et la maintenance de l'infrastructure informatique</strong> du campus.</p>
+
+                    <p>Durant ce stage, j'ai travaillé aux côtés du responsable informatique afin d'étudier l'architecture réseau existante, proposer des améliorations techniques et participer à des interventions concrètes de maintenance et de déploiement informatique.</p>
                 </div>
             </div>
 
-            <div class="mission-item">
-                <div class="mission-title">Déploiement et maintenance de postes</div>
-                <div class="mission-desc">
-                    Installation de Windows 11 sur plusieurs postes, configuration des logiciels essentiels, mise à jour des pilotes et optimisation des systèmes informatiques.
+            <div class="content-section">
+                <h3 class="section-title">💼 Missions Réalisées</h3>
+                <div class="missions-flow">
+                    <div class="mission-item">
+                        <div class="mission-title">Analyse de l'infrastructure réseau</div>
+                        <div class="mission-desc">Étude complète de l'architecture réseau du campus comprenant plusieurs bâtiments, analyse des liaisons RJ45 et fibre, identification des contraintes techniques et réalisation de schémas réseau.</div>
+                    </div>
+                    <div class="mission-item">
+                        <div class="mission-title">Projet de segmentation VLAN</div>
+                        <div class="mission-desc">Conception d'une architecture réseau segmentée (VLAN Administratif, Pédagogique et Wi-Fi) afin d'améliorer la sécurité et l'organisation des flux réseau.</div>
+                    </div>
+                    <div class="mission-item">
+                        <div class="mission-title">Déploiement et maintenance de postes</div>
+                        <div class="mission-desc">Installation de Windows 11 sur plusieurs postes, configuration des logiciels essentiels, mise à jour des pilotes et optimisation des systèmes informatiques.</div>
+                    </div>
+                    <div class="mission-item">
+                        <div class="mission-title">Automatisation des installations</div>
+                        <div class="mission-desc">Mise en place d'installations automatisées de logiciels via scripts et packages afin de standardiser les postes et réduire le temps de déploiement.</div>
+                    </div>
+                    <div class="mission-item">
+                        <div class="mission-title">Gestion du parc informatique avec GLPI</div>
+                        <div class="mission-desc">Étude et déploiement de la solution open-source GLPI pour l'inventaire des équipements, la gestion des tickets et la supervision du parc informatique.</div>
+                    </div>
+                    <div class="mission-item">
+                        <div class="mission-title">Installation d'équipements multimédia</div>
+                        <div class="mission-desc">Installation de webcams et d'ordinateurs pour la diffusion en streaming d'un événement organisé sur le campus.</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="mission-item">
-                <div class="mission-title">Automatisation des installations</div>
-                <div class="mission-desc">
-                    Mise en place d'installations automatisées de logiciels via scripts et packages afin de standardiser les postes et réduire le temps de déploiement.
+            <div class="content-section">
+                <h3 class="section-title">🚀 Compétences Développées</h3>
+                <div class="skills-columns">
+                    <div class="skill-column">
+                        <h4>🌐 Réseau</h4>
+                        <ul class="skill-list">
+                            <li>Architecture réseau</li>
+                            <li>Segmentation VLAN</li>
+                            <li>Analyse de topologie</li>
+                            <li>Supervision SNMP</li>
+                        </ul>
+                    </div>
+                    <div class="skill-column">
+                        <h4>💻 Systèmes</h4>
+                        <ul class="skill-list">
+                            <li>Installation Windows 11</li>
+                            <li>Déploiement automatisé</li>
+                            <li>Mise à jour BIOS et pilotes</li>
+                            <li>Maintenance informatique</li>
+                        </ul>
+                    </div>
+                    <div class="skill-column">
+                        <h4>🛠 Outils</h4>
+                        <ul class="skill-list">
+                            <li>GLPI</li>
+                            <li>WAPT</li>
+                            <li>Cisco Packet Tracer</li>
+                            <li>draw.io</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-            <div class="mission-item">
-                <div class="mission-title">Gestion du parc informatique avec GLPI</div>
-                <div class="mission-desc">
-                    Étude et déploiement de la solution open-source GLPI pour l'inventaire des équipements, la gestion des tickets et la supervision du parc informatique.
+            <div class="content-section">
+                <h3 class="section-title">⭐ Points Forts du Stage</h3>
+                <div class="highlight-box">
+                    <div class="highlight-label">Projet principal</div>
+                    <div class="highlight-text">
+                        L'analyse et la modélisation du réseau du campus ont été particulièrement enrichissantes. 
+                        Ce travail m'a permis de comprendre les problématiques réelles d'infrastructure informatique 
+                        à grande échelle, notamment la segmentation réseau, la résilience et la gestion du parc informatique.
+                    </div>
                 </div>
             </div>
 
-            <div class="mission-item">
-                <div class="mission-title">Installation d'équipements multimédia</div>
-                <div class="mission-desc">
-                    Installation de webcams et d'ordinateurs pour la diffusion en streaming d'un événement organisé sur le campus.
+            <div class="content-section">
+                <h3 class="section-title">💡 Conclusion</h3>
+                <div class="conclusion-text">
+                    Ce stage m'a permis de découvrir le fonctionnement d'une <strong>infrastructure informatique complexe</strong> dans un établissement de formation. 
+                    J'ai pu participer à des missions variées allant de l'analyse réseau à la maintenance des systèmes et au déploiement d'outils de gestion du parc informatique.
+                    <span class="conclusion-highlight">
+                        Cette expérience a renforcé mes compétences en administration systèmes et réseaux, 
+                        tout en me donnant une vision concrète des enjeux liés à la gestion d'un réseau d'entreprise.
+                    </span>
                 </div>
             </div>
-
-        </div>
-    </div>
-
-    <div class="content-section">
-        <h3 class="section-title">🚀 Compétences Développées</h3>
-        <div class="skills-columns">
-
-            <div class="skill-column">
-                <h4>🌐 Réseau</h4>
-                <ul class="skill-list">
-                    <li>Architecture réseau</li>
-                    <li>Segmentation VLAN</li>
-                    <li>Analyse de topologie</li>
-                    <li>Supervision SNMP</li>
-                </ul>
-            </div>
-
-            <div class="skill-column">
-                <h4>💻 Systèmes</h4>
-                <ul class="skill-list">
-                    <li>Installation Windows 11</li>
-                    <li>Déploiement automatisé</li>
-                    <li>Mise à jour BIOS et pilotes</li>
-                    <li>Maintenance informatique</li>
-                </ul>
-            </div>
-
-            <div class="skill-column">
-                <h4>🛠 Outils</h4>
-                <ul class="skill-list">
-                    <li>GLPI</li>
-                    <li>WAPT</li>
-                    <li>Cisco Packet Tracer</li>
-                    <li>draw.io</li>
-                </ul>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="content-section">
-        <h3 class="section-title">⭐ Points Forts du Stage</h3>
-        <div class="highlight-box">
-            <div class="highlight-label">Projet principal</div>
-            <div class="highlight-text">
-                L'analyse et la modélisation du réseau du campus ont été particulièrement enrichissantes. 
-                Ce travail m'a permis de comprendre les problématiques réelles d'infrastructure informatique 
-                à grande échelle, notamment la segmentation réseau, la résilience et la gestion du parc informatique.
-            </div>
-        </div>
-    </div>
-
-    <div class="content-section">
-        <h3 class="section-title">💡 Conclusion</h3>
-        <div class="conclusion-text">
-            Ce stage m'a permis de découvrir le fonctionnement d'une <strong>infrastructure informatique complexe</strong> dans un établissement de formation. 
-            J'ai pu participer à des missions variées allant de l'analyse réseau à la maintenance des systèmes et au déploiement d'outils de gestion du parc informatique.
-
-            <span class="conclusion-highlight">
-            Cette expérience a renforcé mes compétences en administration systèmes et réseaux, 
-            tout en me donnant une vision concrète des enjeux liés à la gestion d'un réseau d'entreprise.
-            </span>
-        </div>
-    </div>
-</div>
-
-</div>
-
         </div>
     </div>
 </main>
@@ -714,28 +753,48 @@
 </svg>
 
 <script>
-const nav = document.querySelector('.gooey-nav');
-const indicator = document.querySelector('.indicator');
-const items = document.querySelectorAll('.nav-item');
+    /* ── Desktop gooey nav indicator ── */
+    const nav       = document.querySelector('.gooey-nav');
+    const indicator = document.querySelector('.indicator');
+    const items     = document.querySelectorAll('.nav-item');
 
-function moveIndicator(el) {
-    const rect = el.getBoundingClientRect();
-    const navRect = nav.getBoundingClientRect();
-    indicator.style.width = rect.width + 'px';
-    indicator.style.left = rect.left - navRect.left + 'px';
-}
+    function moveIndicator(el) {
+        const rect    = el.getBoundingClientRect();
+        const navRect = nav.getBoundingClientRect();
+        indicator.style.width = rect.width + 'px';
+        indicator.style.left  = (rect.left - navRect.left) + 'px';
+    }
 
-items.forEach(item => {
-    item.addEventListener('mouseenter', () => moveIndicator(item));
-});
+    items.forEach(item => item.addEventListener('mouseenter', () => moveIndicator(item)));
+    moveIndicator(items[2]);   // highlight "Stages" by default
 
-moveIndicator(items[2]);
-    const toggle = document.querySelector(".menu-toggle");
-const navMenu = document.querySelector(".gooey-nav");
+    /* ── Hamburger / mobile menu ── */
+    const hamburger  = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
 
-toggle.addEventListener("click", () => {
-    navMenu.classList.toggle("active");
-});
+    hamburger.addEventListener('click', () => {
+        const isOpen = hamburger.classList.toggle('open');
+        mobileMenu.classList.toggle('visible', isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    // Close menu when a link is clicked
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('open');
+            mobileMenu.classList.remove('visible');
+            document.body.style.overflow = '';
+        });
+    });
+
+    // Close menu on Escape key
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && mobileMenu.classList.contains('visible')) {
+            hamburger.classList.remove('open');
+            mobileMenu.classList.remove('visible');
+            document.body.style.overflow = '';
+        }
+    });
 </script>
 
 </body>
