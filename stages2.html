@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Stages | Léo JACOB</title>
+    <title>Stage C2M | Léo JACOB</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.36/build/spline-viewer.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -43,13 +43,13 @@
             z-index: -1;
         }
 
-        /* ── HEADER & DESKTOP NAV ── */
         header {
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 100;
             padding: 1rem 0;
+            min-height: 64px;
         }
 
         .gooey-nav {
@@ -75,9 +75,7 @@
             transition: color 0.3s;
         }
 
-        .nav-item:hover {
-            color: var(--primary);
-        }
+        .nav-item:hover { color: var(--primary); }
 
         .indicator {
             position: absolute;
@@ -90,7 +88,6 @@
             z-index: 1;
         }
 
-        /* ── HAMBURGER BUTTON (mobile only) ── */
         .hamburger {
             display: none;
             flex-direction: column;
@@ -103,11 +100,13 @@
             border: none;
             border-radius: 50%;
             cursor: pointer;
-            margin: 0 auto;
             backdrop-filter: blur(12px);
             transition: background 0.3s;
             z-index: 200;
-            position: relative;
+            position: absolute;
+            top: 50%;
+            right: 1.2rem;
+            transform: translateY(-50%);
         }
 
         .hamburger span {
@@ -120,18 +119,10 @@
             transform-origin: center;
         }
 
-        .hamburger.open span:nth-child(1) {
-            transform: translateY(7px) rotate(45deg);
-        }
-        .hamburger.open span:nth-child(2) {
-            opacity: 0;
-            transform: scaleX(0);
-        }
-        .hamburger.open span:nth-child(3) {
-            transform: translateY(-7px) rotate(-45deg);
-        }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-        /* ── MOBILE MENU OVERLAY ── */
         .mobile-menu {
             display: none;
             position: fixed;
@@ -148,10 +139,7 @@
             transition: opacity 0.35s ease;
         }
 
-        .mobile-menu.visible {
-            opacity: 1;
-            pointer-events: all;
-        }
+        .mobile-menu.visible { opacity: 1; pointer-events: all; }
 
         .mobile-menu a {
             text-decoration: none;
@@ -163,6 +151,8 @@
             transition: all 0.3s;
             position: relative;
             letter-spacing: -0.5px;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         .mobile-menu a::after {
@@ -178,28 +168,10 @@
             transition: width 0.3s;
         }
 
-        .mobile-menu a:hover,
-        .mobile-menu a.active {
-            color: var(--light);
-        }
+        .mobile-menu a:hover, .mobile-menu a.active { color: var(--light); }
+        .mobile-menu a:hover::after, .mobile-menu a.active::after { width: 60%; }
 
-        .mobile-menu a:hover::after,
-        .mobile-menu a.active::after {
-            width: 60%;
-        }
-
-        /* stagger animation for mobile links */
-        .mobile-menu a {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s;
-        }
-
-        .mobile-menu.visible a {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+        .mobile-menu.visible a { opacity: 1; transform: translateY(0); }
         .mobile-menu.visible a:nth-child(1) { transition-delay: 0.05s; }
         .mobile-menu.visible a:nth-child(2) { transition-delay: 0.10s; }
         .mobile-menu.visible a:nth-child(3) { transition-delay: 0.15s; }
@@ -207,8 +179,7 @@
         .mobile-menu.visible a:nth-child(5) { transition-delay: 0.25s; }
         .mobile-menu.visible a:nth-child(6) { transition-delay: 0.30s; }
 
-        /* ── MAIN CONTENT ── */
-        main { 
+        main {
             padding-top: 120px;
             min-height: 100vh;
         }
@@ -319,6 +290,8 @@
         .content-section:nth-child(4) { animation-delay: 1s; }
         .content-section:nth-child(5) { animation-delay: 1.2s; }
         .content-section:nth-child(6) { animation-delay: 1.4s; }
+        .content-section:nth-child(7) { animation-delay: 1.6s; }
+        .content-section:nth-child(8) { animation-delay: 1.8s; }
 
         .section-title {
             font-size: 1.8rem;
@@ -379,10 +352,7 @@
             border-left-color: var(--accent);
         }
 
-        .mission-item:hover::before {
-            width: 100%;
-            opacity: 0.1;
-        }
+        .mission-item:hover::before { width: 100%; opacity: 0.1; }
 
         .mission-title {
             font-weight: 700;
@@ -395,6 +365,60 @@
             color: var(--text-muted);
             font-size: 0.95rem;
             line-height: 1.6;
+        }
+
+        /* VLAN table */
+        .vlan-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .vlan-table th {
+            background: rgba(99,102,241,0.25);
+            color: var(--light);
+            padding: 1rem 1.5rem;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .vlan-table td {
+            padding: 0.9rem 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .vlan-table tr:last-child td { border-bottom: none; }
+
+        .vlan-table tr:hover td {
+            background: rgba(255,255,255,0.04);
+            color: var(--light);
+        }
+
+        .vlan-id {
+            display: inline-block;
+            background: rgba(99,102,241,0.2);
+            color: var(--primary);
+            font-weight: 700;
+            padding: 0.2rem 0.7rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        .ip-code {
+            font-family: monospace;
+            color: #a5f3fc;
+            font-size: 0.9rem;
+            background: rgba(165,243,252,0.08);
+            padding: 0.15rem 0.6rem;
+            border-radius: 6px;
         }
 
         .skills-columns {
@@ -413,9 +437,7 @@
             gap: 0.5rem;
         }
 
-        .skill-list {
-            list-style: none;
-        }
+        .skill-list { list-style: none; }
 
         .skill-list li {
             color: var(--text-muted);
@@ -433,14 +455,8 @@
             transition: all 0.3s;
         }
 
-        .skill-list li:hover {
-            color: var(--light);
-            transform: translateX(5px);
-        }
-
-        .skill-list li:hover::before {
-            color: var(--accent);
-        }
+        .skill-list li:hover { color: var(--light); transform: translateX(5px); }
+        .skill-list li:hover::before { color: var(--accent); }
 
         .highlight-box {
             background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(236,72,153,0.1));
@@ -471,9 +487,43 @@
             font-size: 1.1rem;
         }
 
-        .highlight-text {
+        .highlight-text { color: var(--text-muted); line-height: 1.8; }
+
+        /* Badges difficultés */
+        .difficulties-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .difficulty-badge {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            background: rgba(236,72,153,0.07);
+            border: 1px solid rgba(236,72,153,0.2);
+            border-radius: 14px;
+            padding: 1rem 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .difficulty-badge:hover {
+            background: rgba(236,72,153,0.12);
+            border-color: rgba(236,72,153,0.4);
+            transform: translateY(-2px);
+        }
+
+        .difficulty-badge .badge-icon {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .difficulty-badge .badge-text {
             color: var(--text-muted);
-            line-height: 1.8;
+            font-size: 0.92rem;
+            line-height: 1.55;
         }
 
         .conclusion-text {
@@ -489,10 +539,7 @@
             border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .conclusion-text strong {
-            color: var(--light);
-            font-weight: 700;
-        }
+        .conclusion-text strong { color: var(--light); font-weight: 700; }
 
         .conclusion-highlight {
             color: var(--primary);
@@ -509,7 +556,7 @@
             border-top: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* ── ANIMATIONS ── */
+        /* ANIMATIONS */
         @keyframes fadeInScale {
             from { opacity: 0; transform: scale(0.95); }
             to   { opacity: 1; transform: scale(1); }
@@ -528,7 +575,7 @@
         }
         @keyframes gradientShift {
             0%, 100% { background-position: 0% 50%; }
-            50%      { background-position: 100% 50%; }
+            50%       { background-position: 100% 50%; }
         }
         @keyframes borderFlow {
             0%   { background-position: 0% 50%; }
@@ -543,46 +590,59 @@
             50%       { opacity: 0.5; transform: scale(1.1); }
         }
 
-        /* ── RESPONSIVE ── */
-        @media (max-width: 768px) {
-            /* hide desktop nav, show hamburger */
-            .gooey-nav   { display: none; }
-            .hamburger    { display: flex; }
-            .mobile-menu  { display: flex; }
-
-            main { padding-top: 90px; }
-
-            .stage-wrapper {
-                padding: 1.8rem 1.2rem;
-                border-radius: 24px;
-            }
-
-            .stage-title   { font-size: 2rem; }
-            .stage-company { font-size: 1.3rem; }
-
-            .stage-meta {
-                flex-direction: column;
-                align-items: center;
-                gap: 0.5rem;
-            }
-
-            .section-title { font-size: 1.3rem; }
-
-            .skills-columns {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .mission-item:hover { transform: none; }
-
-            .conclusion-text { font-size: 1rem; padding: 1.2rem; }
+        /* RESPONSIVE TABLET */
+        @media (max-width: 968px) and (min-width: 769px) {
+            .stage-wrapper      { padding: 2rem; }
+            .stage-title        { font-size: 2.5rem; }
+            .skills-columns     { grid-template-columns: 1fr; }
+            .stage-meta         { flex-direction: column; gap: 0.5rem; }
+            .difficulties-grid  { grid-template-columns: 1fr; }
         }
 
-        @media (max-width: 968px) and (min-width: 769px) {
-            .stage-wrapper { padding: 2rem; }
-            .stage-title   { font-size: 2.5rem; }
-            .skills-columns { grid-template-columns: 1fr; }
-            .stage-meta     { flex-direction: column; gap: 0.5rem; }
+        /* RESPONSIVE MOBILE */
+        @media (max-width: 768px) {
+            .gooey-nav   { display: none; }
+            .hamburger   { display: flex; }
+            .mobile-menu { display: flex; }
+
+            main { padding-top: 80px; }
+            .container { padding: 0 0.8rem 3rem; }
+
+            .stage-wrapper { padding: 1.2rem 0.9rem; border-radius: 18px; }
+
+            .stage-title   { font-size: clamp(1.3rem, 6vw, 1.9rem); line-height: 1.2; word-break: break-word; }
+            .stage-company { font-size: clamp(0.85rem, 3.8vw, 1.2rem); line-height: 1.4; word-break: break-word; }
+            .stage-meta    { flex-direction: column; align-items: center; gap: 0.4rem; }
+            .meta-item     { font-size: 0.88rem; }
+
+            .section-title   { font-size: clamp(0.95rem, 4vw, 1.2rem); padding-left: 1rem; line-height: 1.4; word-break: break-word; }
+            .section-content { font-size: 0.88rem; line-height: 1.7; }
+
+            .mission-item  { padding: 0.9rem; }
+            .mission-title { font-size: 0.9rem; }
+            .mission-desc  { font-size: 0.82rem; line-height: 1.55; }
+            .mission-item:hover { transform: none; }
+
+            .skills-columns   { grid-template-columns: 1fr; gap: 1rem; }
+            .skill-column h4  { font-size: 0.95rem; }
+            .skill-list li    { font-size: 0.85rem; padding: 0.3rem 0 0.3rem 1.2rem; }
+
+            .difficulties-grid    { grid-template-columns: 1fr; }
+            .difficulty-badge     { padding: 0.8rem 1rem; }
+            .difficulty-badge .badge-text { font-size: 0.82rem; }
+
+            .highlight-box   { padding: 1rem; }
+            .highlight-label { font-size: 0.9rem; }
+            .highlight-text  { font-size: 0.84rem; line-height: 1.6; }
+
+            .vlan-table th, .vlan-table td { padding: 0.7rem 0.9rem; font-size: 0.82rem; }
+
+            .conclusion-text   { font-size: 0.86rem; padding: 1rem; line-height: 1.75; }
+            .conclusion-highlight { font-size: 0.9rem; }
+
+            .divider         { margin: 1.2rem 0; }
+            .content-section { margin-bottom: 1.6rem; }
+            .stage-header    { margin-bottom: 1.5rem; }
         }
     </style>
 </head>
@@ -594,7 +654,6 @@
 <div class="overlay"></div>
 
 <header>
-    <!-- Desktop nav -->
     <nav class="gooey-nav">
         <a href="index.html"     class="nav-item">Accueil</a>
         <a href="formation.html" class="nav-item">Formation</a>
@@ -605,7 +664,6 @@
         <span class="indicator"></span>
     </nav>
 
-    <!-- Mobile hamburger -->
     <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu">
         <span></span>
         <span></span>
@@ -613,7 +671,6 @@
     </button>
 </header>
 
-<!-- Mobile full-screen menu -->
 <div class="mobile-menu" id="mobileMenu">
     <a href="index.html">Accueil</a>
     <a href="formation.html">Formation</a>
@@ -626,114 +683,182 @@
 <main>
     <div class="container">
         <div class="stage-wrapper">
+
+            <!-- HEADER -->
             <div class="stage-header">
                 <h1 class="stage-title">Stage en Entreprise</h1>
-                <h2 class="stage-company">🏫 Campus des Métiers de Marzy (A.P.R.A.FO – C2M)</h2>
+                <h2 class="stage-company">🏫 Campus C2M</h2>
                 <div class="stage-meta">
-                    <span class="meta-item"><span class="meta-icon">📍</span> Marzy (58180)</span>
-                    <span class="meta-item"><span class="meta-icon">🎓</span> BTS SIO 2ème année</span>
-                    <span class="meta-item"><span class="meta-icon">👤</span> Jean-Luc Doussot</span>
+                    <span class="meta-item"><span class="meta-icon">📍</span> Campus C2M</span>
+                    <span class="meta-item"><span class="meta-icon">🎓</span> BTS SIO – Option SISR</span>
+                    <span class="meta-item"><span class="meta-icon">👤</span> M. Jean-Luc Doussot</span>
+                    <span class="meta-item"><span class="meta-icon">🗓️</span> 8 semaines</span>
                 </div>
             </div>
 
             <div class="divider"></div>
 
+            <!-- CONTEXTE -->
             <div class="content-section">
                 <h3 class="section-title">🎯 Contexte & Objectifs</h3>
                 <div class="section-content">
-                    <p>Ce stage s'est déroulé au <strong>Campus des Métiers de Marzy (C2M)</strong>, un établissement de formation regroupant plusieurs bâtiments et une infrastructure réseau complexe. 
-                    L'objectif principal était de participer à <strong>l'analyse, l'amélioration et la maintenance de l'infrastructure informatique</strong> du campus.</p>
-
-                    <p>Durant ce stage, j'ai travaillé aux côtés du responsable informatique afin d'étudier l'architecture réseau existante, proposer des améliorations techniques et participer à des interventions concrètes de maintenance et de déploiement informatique.</p>
+                    <p>Stage de <strong>8 semaines</strong> au sein du campus C2M, dont l'infrastructure réseau date de la création du site en <strong>1978</strong> et a évolué par ajouts successifs. L'objectif principal était d'<strong>analyser l'infrastructure réseau existante</strong>, d'en identifier les limites, puis de proposer des solutions de modernisation réalistes — notamment à travers une <strong>segmentation logique par VLANs</strong> — tout en respectant les contraintes techniques, budgétaires et organisationnelles d'un établissement public.</p>
                 </div>
             </div>
 
+            <!-- INFRASTRUCTURE EXISTANTE -->
+            <div class="content-section">
+                <h3 class="section-title">🏗️ Infrastructure Existante</h3>
+                <div class="section-content">
+                    <p>Le campus est composé de plusieurs bâtiments : le <strong>Bâtiment A</strong> (administration et cœur de réseau), les <strong>Bâtiments B, C, D</strong> (pôles pédagogiques et ateliers), le <strong>Bâtiment Méca</strong> (ateliers techniques) et le <strong>Self</strong> (zone mixte). Chaque bâtiment dispose d'une ou plusieurs baies de brassage reliées en RJ45 ou fibre optique selon les distances.</p>
+                    <br>
+                    <p>L'architecture héritée présente plusieurs caractéristiques : câblage cuivre RJ45 Cat5, topologie en cascade entre bâtiments, coexistence de switchs manageables et non-manageables, et débits limités à <strong>1 Gbit/s</strong>. Ces limites deviennent problématiques face à la croissance du Wi-Fi, des serveurs et des exigences de sécurité.</p>
+                </div>
+            </div>
+
+            <!-- MISSIONS -->
             <div class="content-section">
                 <h3 class="section-title">💼 Missions Réalisées</h3>
                 <div class="missions-flow">
                     <div class="mission-item">
-                        <div class="mission-title">Analyse de l'infrastructure réseau</div>
-                        <div class="mission-desc">Étude complète de l'architecture réseau du campus comprenant plusieurs bâtiments, analyse des liaisons RJ45 et fibre, identification des contraintes techniques et réalisation de schémas réseau.</div>
+                        <div class="mission-title">Analyse & Cartographie du Réseau</div>
+                        <div class="mission-desc">Visite complète des locaux, identification des bâtiments et baies de brassage, schématisation de l'architecture réseau existante et identification des problématiques (mélange de flux, chaînage entre bâtiments, risques de sécurité).</div>
                     </div>
                     <div class="mission-item">
-                        <div class="mission-title">Projet de segmentation VLAN</div>
-                        <div class="mission-desc">Conception d'une architecture réseau segmentée (VLAN Administratif, Pédagogique et Wi-Fi) afin d'améliorer la sécurité et l'organisation des flux réseau.</div>
+                        <div class="mission-title">Proposition de Segmentation VLAN</div>
+                        <div class="mission-desc">Conception d'une architecture logique avec 3 VLANs (Administratif, Pédagogique, Wi-Fi) sur switchs Zyxel GS1920. Configuration des ports en mode access et trunk, définition des PVID et des plages IP. Liaisons inter-bâtiments en mode trunk sur fibre existante.</div>
                     </div>
                     <div class="mission-item">
-                        <div class="mission-title">Déploiement et maintenance de postes</div>
-                        <div class="mission-desc">Installation de Windows 11 sur plusieurs postes, configuration des logiciels essentiels, mise à jour des pilotes et optimisation des systèmes informatiques.</div>
+                        <div class="mission-title">Étude de Résilience Réseau</div>
+                        <div class="mission-desc">Analyse des SPOF (Single Points of Failure), étude du Spanning Tree Protocol pour éviter les boucles, du LACP pour l'agrégation de liens, et veille technique sur QoS, SNMP, MTTR et ACL. Étude de faisabilité d'extension vers le Bâtiment D.</div>
                     </div>
                     <div class="mission-item">
-                        <div class="mission-title">Automatisation des installations</div>
-                        <div class="mission-desc">Mise en place d'installations automatisées de logiciels via scripts et packages afin de standardiser les postes et réduire le temps de déploiement.</div>
+                        <div class="mission-title">Maintenance & Déploiement de Postes</div>
+                        <div class="mission-desc">Remise en service de 12 postes (10 fixes + 2 portables) au CDR : installation de Windows 11 Pro via clé USB bootable, déploiement automatisé de logiciels (7-Zip, Adobe Reader, Office, Chrome, ESET) via scripts et Configuration.xml, mise à jour des pilotes et BIOS via HP Support Assistant.</div>
                     </div>
                     <div class="mission-item">
-                        <div class="mission-title">Gestion du parc informatique avec GLPI</div>
-                        <div class="mission-desc">Étude et déploiement de la solution open-source GLPI pour l'inventaire des équipements, la gestion des tickets et la supervision du parc informatique.</div>
+                        <div class="mission-title">Déploiement de GLPI</div>
+                        <div class="mission-desc">Mise en place de la solution open-source GLPI pour la gestion du parc informatique : inventaire automatisé des machines, centralisation des tickets de support et supervision réseau via SNMP. Déploiement de l'agent via scripts VBS et outil WAPT.</div>
                     </div>
                     <div class="mission-item">
-                        <div class="mission-title">Installation d'équipements multimédia</div>
-                        <div class="mission-desc">Installation de webcams et d'ordinateurs pour la diffusion en streaming d'un événement organisé sur le campus.</div>
+                        <div class="mission-title">Refonte du Portfolio & Installation Multimédia</div>
+                        <div class="mission-desc">Restructuration du code HTML/CSS du portfolio professionnel (balises sémantiques, responsive design, accessibilité). Installation de webcams et configuration de postes dédiés à la diffusion en streaming pour un événement sur le campus.</div>
                     </div>
                 </div>
             </div>
 
+            <!-- VLANS -->
+            <div class="content-section">
+                <h3 class="section-title">🔀 Segmentation VLAN Proposée</h3>
+                <div class="section-content">
+                    <p>La segmentation logique par VLANs vise à séparer les flux sans modifier la topologie physique, améliorer la sécurité par isolation des réseaux, réduire les domaines de broadcast et faciliter la maintenance. Rendue possible par les switchs manageables et les liaisons fibre inter-bâtiments.</p>
+                </div>
+                <table class="vlan-table">
+                    <thead>
+                        <tr>
+                            <th>VLAN ID</th>
+                            <th>Usage</th>
+                            <th>Réseau IP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="vlan-id">1</span></td>
+                            <td>Administratif</td>
+                            <td><span class="ip-code">192.168.10.0/24</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="vlan-id">16</span></td>
+                            <td>Pédagogique</td>
+                            <td><span class="ip-code">192.168.20.0/20</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="vlan-id">32</span></td>
+                            <td>Wi-Fi</td>
+                            <td><span class="ip-code">192.168.30.0/24</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- COMPETENCES -->
             <div class="content-section">
                 <h3 class="section-title">🚀 Compétences Développées</h3>
                 <div class="skills-columns">
                     <div class="skill-column">
-                        <h4>🌐 Réseau</h4>
+                        <h4>🖧 Réseau</h4>
                         <ul class="skill-list">
-                            <li>Architecture réseau</li>
-                            <li>Segmentation VLAN</li>
-                            <li>Analyse de topologie</li>
-                            <li>Supervision SNMP</li>
+                            <li>Configuration VLANs (Zyxel)</li>
+                            <li>Trunk / Access / PVID</li>
+                            <li>STP, LACP, SPOF</li>
+                            <li>QoS, SNMP, ACL</li>
+                            <li>Fibre optique inter-sites</li>
                         </ul>
                     </div>
                     <div class="skill-column">
                         <h4>💻 Systèmes</h4>
                         <ul class="skill-list">
-                            <li>Installation Windows 11</li>
-                            <li>Déploiement automatisé</li>
-                            <li>Mise à jour BIOS et pilotes</li>
-                            <li>Maintenance informatique</li>
+                            <li>Déploiement Windows 11 Pro</li>
+                            <li>Automatisation via scripts</li>
+                            <li>Gestion BIOS & pilotes</li>
+                            <li>GLPI & WAPT</li>
+                            <li>Gestion de parc informatique</li>
                         </ul>
                     </div>
                     <div class="skill-column">
-                        <h4>🛠 Outils</h4>
+                        <h4>📐 Méthodologie</h4>
                         <ul class="skill-list">
-                            <li>GLPI</li>
-                            <li>WAPT</li>
-                            <li>Cisco Packet Tracer</li>
-                            <li>draw.io</li>
+                            <li>Analyse d'infrastructure</li>
+                            <li>Rédaction de notes techniques</li>
+                            <li>Développement web (HTML/CSS)</li>
+                            <li>Veille technologique</li>
+                            <li>Gestion de projet IT</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
+            <!-- DIFFICULTES -->
             <div class="content-section">
-                <h3 class="section-title">⭐ Points Forts du Stage</h3>
-                <div class="highlight-box">
-                    <div class="highlight-label">Projet principal</div>
-                    <div class="highlight-text">
-                        L'analyse et la modélisation du réseau du campus ont été particulièrement enrichissantes. 
-                        Ce travail m'a permis de comprendre les problématiques réelles d'infrastructure informatique 
-                        à grande échelle, notamment la segmentation réseau, la résilience et la gestion du parc informatique.
+                <h3 class="section-title">⚠️ Difficultés Rencontrées</h3>
+                <div class="difficulties-grid">
+                    <div class="difficulty-badge">
+                        <span class="badge-icon">🔧</span>
+                        <span class="badge-text">Déploiement manuel des logiciels sur 12 postes simultanément, nécessitant une automatisation par scripts pour optimiser le temps.</span>
+                    </div>
+                    <div class="difficulty-badge">
+                        <span class="badge-icon">🧩</span>
+                        <span class="badge-text">Risques d'incompatibilité de pilotes sur certaines machines, résolus grâce à HP Support Assistant.</span>
+                    </div>
+                    <div class="difficulty-badge">
+                        <span class="badge-icon">📡</span>
+                        <span class="badge-text">Charge importante sur le serveur lors des scans SNMP par GLPI, nécessitant un ajustement de la fréquence des inventaires.</span>
+                    </div>
+                    <div class="difficulty-badge">
+                        <span class="badge-icon">🏗️</span>
+                        <span class="badge-text">Complexité de mise en œuvre du projet VLAN à grande échelle (équipements non-manageables, budgets limités, murs en béton armé).</span>
                     </div>
                 </div>
             </div>
 
+            <!-- POINT FORT -->
+            <div class="content-section">
+                <h3 class="section-title">⭐ Point Fort du Stage</h3>
+                <div class="highlight-box">
+                    <div class="highlight-label">Mission Marquante</div>
+                    <div class="highlight-text">La conception du projet de segmentation VLAN a été la mission la plus enrichissante : elle m'a permis d'allier analyse technique, réflexion architecturale et contraintes réelles d'un établissement public. L'échange avec Arnaud, dirigeant d'Unfiniti et spécialiste réseau, a été particulièrement formateur pour comprendre les enjeux concrets d'une telle implémentation à l'échelle d'un campus.</div>
+                </div>
+            </div>
+
+            <!-- CONCLUSION -->
             <div class="content-section">
                 <h3 class="section-title">💡 Conclusion</h3>
                 <div class="conclusion-text">
-                    Ce stage m'a permis de découvrir le fonctionnement d'une <strong>infrastructure informatique complexe</strong> dans un établissement de formation. 
-                    J'ai pu participer à des missions variées allant de l'analyse réseau à la maintenance des systèmes et au déploiement d'outils de gestion du parc informatique.
-                    <span class="conclusion-highlight">
-                        Cette expérience a renforcé mes compétences en administration systèmes et réseaux, 
-                        tout en me donnant une vision concrète des enjeux liés à la gestion d'un réseau d'entreprise.
-                    </span>
+                    Ce stage au sein du campus C2M a été une <strong>expérience très formatrice</strong> dans le cadre de mon BTS SIO option SISR. Il m'a permis de découvrir les contraintes réelles liées à la gestion d'une infrastructure informatique dans un établissement public — notamment en termes de budget, de maintenance et d'évolution du réseau. Les différentes missions, de l'analyse de l'architecture réseau au déploiement de postes et à la mise en place de GLPI, m'ont permis de développer des compétences techniques solides tout en comprenant l'organisation d'un service informatique.
+                    <span class="conclusion-highlight">Ce stage confirme mon intérêt pour les métiers de l'administration des systèmes et réseaux. 🖧</span>
                 </div>
             </div>
+
         </div>
     </div>
 </main>
@@ -753,7 +878,7 @@
 </svg>
 
 <script>
-    /* ── Desktop gooey nav indicator ── */
+    /* Desktop gooey nav indicator */
     const nav       = document.querySelector('.gooey-nav');
     const indicator = document.querySelector('.indicator');
     const items     = document.querySelectorAll('.nav-item');
@@ -766,9 +891,9 @@
     }
 
     items.forEach(item => item.addEventListener('mouseenter', () => moveIndicator(item)));
-    moveIndicator(items[2]);   // highlight "Stages" by default
+    moveIndicator(items[2]); // highlight "Stages"
 
-    /* ── Hamburger / mobile menu ── */
+    /* Hamburger / mobile menu */
     const hamburger  = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
 
@@ -778,7 +903,6 @@
         document.body.style.overflow = isOpen ? 'hidden' : '';
     });
 
-    // Close menu when a link is clicked
     mobileMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             hamburger.classList.remove('open');
@@ -787,7 +911,6 @@
         });
     });
 
-    // Close menu on Escape key
     document.addEventListener('keydown', e => {
         if (e.key === 'Escape' && mobileMenu.classList.contains('visible')) {
             hamburger.classList.remove('open');
