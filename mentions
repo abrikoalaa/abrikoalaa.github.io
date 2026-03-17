@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mentions Légales | Léo JACOB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.36/build/spline-viewer.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --dark: #020617;
+            --light: #f8fafc;
+            --text-muted: #c7d2fe;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        /* ── BACKGROUND ── */
+        .spline-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+        }
+
+        spline-viewer { width: 100%; height: 100%; }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(rgba(2,6,23,0.65), rgba(2,6,23,0.88));
+            z-index: -1;
+        }
+
+        /* ── HEADER ── */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1rem 0;
+            min-height: 64px;
+        }
+
+        /* ── DESKTOP NAV ── */
+        .gooey-nav {
+            position: relative;
+            display: flex;
+            gap: 1.2rem;
+            padding: 0.4rem 0.6rem;
+            background: rgba(255,255,255,0.95);
+            border-radius: 999px;
+            backdrop-filter: blur(12px);
+            filter: url(#gooey);
+            max-width: fit-content;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            position: relative;
+            z-index: 2;
+            text-decoration: none;
+            color: #706ed4;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-item:hover { color: var(--primary); }
+
+        .indicator {
+            position: absolute;
+            height: 40px;
+            background: #111;
+            border-radius: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.35s ease;
+            z-index: 1;
+        }
+
+        /* ── HAMBURGER ── */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            width: 44px;
+            height: 44px;
+            background: rgba(255,255,255,0.95);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            backdrop-filter: blur(12px);
+            z-index: 200;
+            position: absolute;
+            top: 50%;
+            right: 1.2rem;
+            transform: translateY(-50%);
+            transition: background 0.3s;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #706ed4;
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* ── MOBILE MENU ── */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 150;
+            background: rgba(2,6,23,0.97);
+            backdrop-filter: blur(20px);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+
+        .mobile-menu.visible { opacity: 1; pointer-events: all; }
+
+        .mobile-menu a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 2rem;
+            font-weight: 700;
+            padding: 0.8rem 2rem;
+            border-radius: 16px;
+            position: relative;
+            letter-spacing: -0.5px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s;
+        }
+
+        .mobile-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        .mobile-menu a:hover, .mobile-menu a.active { color: var(--light); }
+        .mobile-menu a:hover::after, .mobile-menu a.active::after { width: 60%; }
+
+        .mobile-menu.visible a { opacity: 1; transform: translateY(0); }
+        .mobile-menu.visible a:nth-child(1) { transition-delay: 0.05s; }
+        .mobile-menu.visible a:nth-child(2) { transition-delay: 0.10s; }
+        .mobile-menu.visible a:nth-child(3) { transition-delay: 0.15s; }
+        .mobile-menu.visible a:nth-child(4) { transition-delay: 0.20s; }
+        .mobile-menu.visible a:nth-child(5) { transition-delay: 0.25s; }
+        .mobile-menu.visible a:nth-child(6) { transition-delay: 0.30s; }
+
+        /* ── PAGE HEADER ── */
+        .page-header {
+            min-height: 38vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 2rem 3rem;
+            text-align: center;
+            animation: fadeInDown 0.9s ease both;
+        }
+
+        .page-label {
+            font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+            font-weight: 800;
+            letter-spacing: 0.6em;
+            text-transform: uppercase;
+            color: transparent;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            background-size: 200% 100%;
+            animation: borderFlow 3s linear infinite;
+            filter: drop-shadow(0 0 12px rgba(99,102,241,0.6));
+            margin-bottom: 1rem;
+        }
+
+        .page-header h1 {
+            font-size: clamp(2.2rem, 7vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            background: linear-gradient(135deg, var(--light), var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ── CONTENT ── */
+        .content {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 3rem 2rem 6rem;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        /* ── CARDS ── */
+        .section-card {
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem 2.2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+            margin-bottom: 1.5rem;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .section-card:hover {
+            border-color: rgba(99,102,241,0.35);
+            transform: translateY(-2px);
+        }
+
+        .section-card h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--light);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .section-card h2 .icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .section-card p,
+        .section-card li {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.85;
+        }
+
+        .section-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .section-card ul li {
+            padding: 0.3rem 0;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+
+        .section-card ul li::before {
+            content: '›';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .section-card a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .section-card a:hover { color: var(--accent); }
+
+        .highlight {
+            display: inline-block;
+            background: rgba(99,102,241,0.15);
+            border: 1px solid rgba(99,102,241,0.3);
+            border-radius: 6px;
+            padding: 0.1rem 0.6rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #a5b4fc;
+            margin-left: 0.3rem;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(99,102,241,0.4), transparent);
+            margin: 0.8rem 0 1rem;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .update-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(16,185,129,0.15);
+            border: 1px solid rgba(16,185,129,0.3);
+            border-radius: 999px;
+            padding: 0.3rem 0.9rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #6ee7b7;
+            margin-bottom: 2rem;
+        }
+
+        .update-badge::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #94a3b8;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        footer a:hover { color: var(--accent); }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes borderFlow {
+            0%   { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.4; }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .gooey-nav { display: none; }
+            .hamburger { display: flex; }
+            .mobile-menu { display: flex; }
+
+            .content { padding: 2rem 1.2rem 4rem; }
+            .section-card { padding: 1.4rem 1.4rem; border-radius: 14px; }
+            .row { grid-template-columns: 1fr; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="spline-bg">
+    <spline-viewer url="https://prod.spline.design/PZ3znCVOWL0HGcDy/scene.splinecode"></spline-viewer>
+</div>
+<div class="overlay"></div>
+
+<header>
+    <nav class="gooey-nav">
+        <a href="index.html"            class="nav-item">Accueil</a>
+        <a href="formation.html"        class="nav-item">Formation</a>
+        <a href="stages.html"           class="nav-item">Stages</a>
+        <a href="projets.html"          class="nav-item">Projets</a>
+        <a href="veille.html"           class="nav-item">Veille</a>
+        <a href="contact.html"          class="nav-item">Contact</a>
+        <span class="indicator"></span>
+    </nav>
+
+    <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu">
+        <span></span><span></span><span></span>
+    </button>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Accueil</a>
+    <a href="formation.html">Formation</a>
+    <a href="stages.html">Stages</a>
+    <a href="projets.html">Projets</a>
+    <a href="veille.html">Veille</a>
+    <a href="contact.html">Contact</a>
+</div>
+
+<main>
+    <section class="page-header">
+        <div class="page-label">Informations légales</div>
+        <h1>Mentions légales</h1>
+    </section>
+
+    <div class="content">
+
+        <div class="update-badge">Dernière mise à jour : mars 2026</div>
+
+        <!-- Éditeur -->
+        <div class="section-card">
+            <h2><span class="icon">👤</span> Éditeur du site</h2>
+            <div class="divider"></div>
+            <ul>
+                <li><strong style="color:var(--light)">Nom :</strong> Léo JACOB</li>
+                <li><strong style="color:var(--light)">Statut :</strong> Étudiant en BTS SIO SISR</li>
+                <li><strong style="color:var(--light)">Établissement :</strong> Lycée Raoul Follereau, Nevers</li>
+                <li><strong style="color:var(--light)">Contact :</strong> <a href="contact.html">Formulaire de contact</a></li>
+            </ul>
+        </div>
+
+        <!-- Hébergement -->
+        <div class="section-card">
+            <h2><span class="icon">🌐</span> Hébergement</h2>
+            <div class="divider"></div>
+            <p>Ce site est hébergé par :</p>
+            <ul style="margin-top: 0.8rem;">
+                <li><strong style="color:var(--light)">Hébergeur :</strong> À compléter <span class="highlight">ex : GitHub Pages</span></li>
+                <li><strong style="color:var(--light)">Adresse :</strong> À compléter</li>
+                <li><strong style="color:var(--light)">Site :</strong> <a href="#" target="_blank">À compléter</a></li>
+            </ul>
+        </div>
+
+        <!-- Propriété intellectuelle -->
+        <div class="section-card">
+            <h2><span class="icon">©</span> Propriété intellectuelle</h2>
+            <div class="divider"></div>
+            <p>
+                L'ensemble du contenu de ce site — textes, images, documents, CV, mises en page et code source — est la propriété exclusive de Léo JACOB, sauf mention contraire.
+            </p>
+            <p style="margin-top: 0.8rem;">
+                Toute reproduction, distribution ou utilisation de ce contenu, même partielle, sans autorisation préalable écrite est strictement interdite et constitue une contrefaçon sanctionnée par le Code de la propriété intellectuelle.
+            </p>
+        </div>
+
+        <!-- Données personnelles -->
+        <div class="section-card">
+            <h2><span class="icon">🔒</span> Données personnelles (RGPD)</h2>
+            <div class="divider"></div>
+            <p>
+                Ce site ne collecte aucune donnée personnelle à des fins commerciales. Conformément au Règlement Général sur la Protection des Données
+                <span class="highlight">RGPD – UE 2016/679</span>, vous disposez des droits suivants :
+            </p>
+            <ul style="margin-top: 0.9rem;">
+                <li>Droit d'accès à vos données</li>
+                <li>Droit de rectification</li>
+                <li>Droit à l'effacement (droit à l'oubli)</li>
+                <li>Droit d'opposition au traitement</li>
+            </ul>
+            <p style="margin-top: 0.9rem;">
+                Pour exercer ces droits, contactez-moi via le <a href="contact.html">formulaire de contact</a>.
+            </p>
+        </div>
+
+        <!-- Cookies & Technologies -->
+        <div class="row">
+            <div class="section-card">
+                <h2><span class="icon">🍪</span> Cookies</h2>
+                <div class="divider"></div>
+                <p>
+                    Ce site n'utilise pas de cookies de traçage ou publicitaires. Aucune donnée de navigation n'est transmise à des tiers.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <h2><span class="icon">⚙️</span> Technologies</h2>
+                <div class="divider"></div>
+                <ul>
+                    <li>HTML5 / CSS3 / JavaScript</li>
+                    <li>Spline (fond 3D interactif)</li>
+                    <li>Google Fonts (Inter)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Responsabilité -->
+        <div class="section-card">
+            <h2><span class="icon">⚠️</span> Limitation de responsabilité</h2>
+            <div class="divider"></div>
+            <p>
+                Les informations contenues sur ce site sont fournies à titre indicatif et peuvent être amenées à évoluer. L'éditeur s'efforce de maintenir les informations à jour mais ne saurait être tenu responsable d'éventuelles erreurs ou omissions.
+            </p>
+            <p style="margin-top: 0.8rem;">
+                Ce site peut contenir des liens vers des sites externes. L'éditeur n'est pas responsable du contenu de ces sites tiers et n'en partage pas nécessairement les opinions.
+            </p>
+        </div>
+
+        <!-- Droit applicable -->
+        <div class="section-card">
+            <h2><span class="icon">⚖️</span> Droit applicable</h2>
+            <div class="divider"></div>
+            <p>
+                Le présent site et ses mentions légales sont soumis au droit français. En cas de litige, les tribunaux français seront seuls compétents.
+            </p>
+        </div>
+
+    </div>
+</main>
+
+<footer>
+    © 2026 – Portfolio Léo JACOB &nbsp;·&nbsp;
+    <a href="mentions-legales.html">Mentions légales</a>
+</footer>
+
+<svg width="0" height="0">
+    <filter id="gooey">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+        <feColorMatrix in="blur" mode="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+            result="gooey"/>
+        <feComposite in="SourceGraphic" in2="gooey" operator="atop"/>
+    </filter>
+</svg>
+
+<script>
+    const nav       = document.querySelector('.gooey-nav');
+    const indicator = document.querySelector('.indicator');
+    const items     = document.querySelectorAll('.nav-item');
+
+    function moveIndicator(el) {
+        const rect    = el.getBoundingClientRect();
+        const navRect = nav.getBoundingClientRect();
+        indicator.style.width = rect.width + 'px';
+        indicator.style.left  = (rect.left - navRect.left) + 'px';
+    }
+
+    items.forEach(item => item.addEventListener('mouseenter', () => moveIndicator(item)));
+
+    const hamburger  = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+        const isOpen = hamburger.classList.toggle('open');
+        mobileMenu.classList.toggle('visible', isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('open');
+            mobileMenu.classList.remove('visible');
+            document.body.style.overflow = '';
+        });
+    });
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && mobileMenu.classList.contains('visible')) {
+            hamburger.classList.remove('open');
+            mobileMenu.classList.remove('visible');
+            document.body.style.overflow = '';
+        }
+    });
+</script>
+
+</body>
+</html>
