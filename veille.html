@@ -6,20 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.36/build/spline-viewer.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    
     <style>
-        :root{--primary:#6366f1;--secondary:#8b5cf6;--accent:#ec4899;--dark:#020617;--light:#f8fafc;--text-muted:#c7d2fe;}
+        :root{--primary:#6366f1;--secondary:#8b5cf6;--accent:#ec4899;--dark:#020617;--light:#f8fafc;--text-muted:#c7d2fe;--nvidia:#76b900;}
         *{margin:0;padding:0;box-sizing:border-box;}
         body{font-family:'Inter',sans-serif;color:var(--light);overflow-x:hidden;}
         .spline-bg{position:fixed;inset:0;z-index:-2;}
         spline-viewer{width:100%;height:100%;}
         .overlay{position:fixed;inset:0;background:linear-gradient(rgba(2,6,23,0.7),rgba(2,6,23,0.9));z-index:-1;}
+
         header{position:fixed;top:0;width:100%;z-index:100;padding:1rem 0;min-height:64px;}
         .gooey-nav{position:relative;display:flex;gap:1.2rem;padding:.4rem .6rem;background:rgba(255,255,255,.95);border-radius:999px;backdrop-filter:blur(12px);filter:url(#gooey);max-width:fit-content;margin:0 auto;}
         .nav-item{position:relative;z-index:2;text-decoration:none;color:#706ed4;font-weight:600;padding:.5rem 1rem;transition:color .3s;white-space:nowrap;}
         .nav-item:hover{color:var(--primary);}
         .indicator{position:absolute;height:40px;background:#111;border-radius:40px;top:50%;transform:translateY(-50%);transition:all .35s ease;z-index:1;}
-        .hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;background:rgba(255,255,255,.95);border:none;border-radius:50%;cursor:pointer;backdrop-filter:blur(12px);z-index:200;position:absolute;top:50%;right:1.2rem;transform:translateY(-50%);transition:background .3s;}
+        .hamburger{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;background:rgba(255,255,255,.95);border:none;border-radius:50%;cursor:pointer;backdrop-filter:blur(12px);z-index:200;position:absolute;top:50%;right:1.2rem;transform:translateY(-50%);}
         .hamburger span{display:block;width:20px;height:2px;background:#706ed4;border-radius:2px;transition:all .35s cubic-bezier(.4,0,.2,1);transform-origin:center;}
         .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
         .hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
@@ -37,75 +37,82 @@
         .mobile-menu.visible a:nth-child(4){transition-delay:.20s}
         .mobile-menu.visible a:nth-child(5){transition-delay:.25s}
         .mobile-menu.visible a:nth-child(6){transition-delay:.30s}
+
         main{padding-top:120px;min-height:100vh;}
-        .container{max-width:1100px;margin:0 auto;padding:0 2rem 5rem;}
-        footer {
-            text-align: center;
-            padding: 3rem 2rem;
-            color: #94a3b8;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            font-size: 0.9rem;
-        }
+        .container{max-width:1060px;margin:0 auto;padding:0 2rem 5rem;}
 
-        footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s;
-        }
+        /* PAGE HEADER */
+        .page-header{text-align:center;margin-bottom:3rem;animation:fadeInDown .8s ease both;}
+        .page-label{font-size:.8rem;font-weight:800;letter-spacing:.6em;text-transform:uppercase;color:transparent;background:linear-gradient(90deg,var(--primary),var(--accent),var(--secondary));-webkit-background-clip:text;background-clip:text;background-size:200% 100%;animation:borderFlow 3s linear infinite;filter:drop-shadow(0 0 10px rgba(99,102,241,.5));margin-bottom:.8rem;}
+        .page-header h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;background:linear-gradient(135deg,var(--light),var(--text-muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.8rem;}
+        .page-header p{color:var(--text-muted);font-size:1rem;}
 
-        footer a:hover { color: var(--accent); }
-        .page-header{text-align:center;margin-bottom:3rem;animation:fadeInDown .8s ease;}
-        .page-header h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;background:linear-gradient(135deg,var(--primary),var(--secondary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.8rem;}
-        .page-header p{color:var(--text-muted);font-size:1.1rem;}
+        /* NVIDIA HERO BADGE */
+        .nvidia-badge{display:inline-flex;align-items:center;gap:.6rem;background:rgba(118,185,0,.12);border:1px solid rgba(118,185,0,.35);border-radius:999px;padding:.45rem 1.2rem;font-size:.85rem;font-weight:700;color:#a3d44f;margin-bottom:2rem;}
+        .nvidia-badge::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--nvidia);animation:pulse 2s ease-in-out infinite;}
+
+        /* CARDS */
+        .card{background:rgba(255,255,255,.04);backdrop-filter:blur(20px);border-radius:20px;border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 40px rgba(0,0,0,.3);transition:border-color .3s,transform .3s;}
+        .card:hover{border-color:rgba(99,102,241,.3);transform:translateY(-3px);}
+
+        /* INTRO */
+        .intro-card{padding:2rem 2.2rem;margin-bottom:2.5rem;animation:fadeInUp .8s ease both;}
+        .intro-card h3{font-size:1.15rem;font-weight:700;color:var(--light);margin-bottom:.9rem;}
+        .intro-card p{color:var(--text-muted);font-size:.95rem;line-height:1.85;margin-bottom:.5rem;}
+        .intro-card strong{color:var(--light);}
+
+        /* SECTION TITLES */
+        .section-title{font-size:1.4rem;color:var(--light);margin:2.5rem 0 1.2rem;font-weight:700;display:flex;align-items:center;gap:.6rem;}
+        .section-label{display:inline-flex;align-items:center;gap:.5rem;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);border-radius:999px;padding:.3rem .9rem;font-size:.78rem;font-weight:700;color:#a5b4fc;margin-left:.6rem;}
+
+        /* TWO-COL GRID */
+        .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem;}
+        .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-bottom:1.5rem;}
+
+        .topic-card{padding:1.8rem;}
+        .topic-card h4{font-size:1rem;font-weight:700;color:var(--light);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;}
+        .topic-card ul{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
+        .topic-card li{color:var(--text-muted);font-size:.88rem;padding-left:1.2rem;position:relative;line-height:1.6;}
+        .topic-card li::before{content:'▸';position:absolute;left:0;color:var(--primary);}
+
+        /* PUSH CARDS */
+        .push-card{padding:1.8rem;}
+        .push-card h4{font-size:1rem;font-weight:700;color:var(--light);margin-bottom:.5rem;}
+        .push-card .method-tag{display:inline-block;font-size:.72rem;font-weight:600;padding:.2rem .7rem;border-radius:999px;margin-bottom:1rem;}
+        .tag-alert{background:rgba(99,102,241,.15);color:#a5b4fc;border:1px solid rgba(99,102,241,.3);}
+        .tag-rss{background:rgba(236,72,153,.12);color:#f9a8d4;border:1px solid rgba(236,72,153,.3);}
+        .tag-social{background:rgba(118,185,0,.12);color:#a3d44f;border:1px solid rgba(118,185,0,.3);}
+        .tag-cert{background:rgba(245,158,11,.12);color:#fcd34d;border:1px solid rgba(245,158,11,.3);}
+        .push-card ul{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
+        .push-card li{color:var(--text-muted);font-size:.88rem;padding-left:1.2rem;position:relative;line-height:1.5;}
+        .push-card li::before{content:'▸';position:absolute;left:0;color:var(--accent);}
+        .push-card a{color:var(--text-muted);text-decoration:none;transition:color .2s;}
+        .push-card a:hover{color:var(--primary);}
+
+        /* DOWNLOAD */
+        .download-section{text-align:center;background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(236,72,153,.1));border-radius:24px;padding:3rem 2rem;border:1px solid rgba(255,255,255,.1);margin-top:3rem;animation:fadeInUp .8s ease .4s both;}
+        .download-section h3{font-size:1.8rem;margin-bottom:1rem;color:var(--light);}
+        .download-section p{color:var(--text-muted);margin-bottom:2rem;font-size:1rem;}
         .btn{display:inline-block;padding:.9rem 2.2rem;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;font-weight:700;font-size:1rem;border-radius:999px;text-decoration:none;border:none;cursor:pointer;transition:all .3s ease;box-shadow:0 4px 24px rgba(99,102,241,.35);}
         .btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(99,102,241,.5);}
+
+        footer{text-align:center;padding:3rem 2rem;color:#94a3b8;border-top:1px solid rgba(255,255,255,.08);font-size:.9rem;}
+        footer a{color:var(--primary);text-decoration:none;font-weight:600;transition:color .2s;}
+        footer a:hover{color:var(--accent);}
+
         @keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
         @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes fadeInScale{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
         @keyframes borderFlow{0%{background-position:0% 50%}100%{background-position:200% 50%}}
-        @keyframes pulse{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:.5;transform:scale(1.1)}}
-        @keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-        @keyframes expandWidth{from{width:0}to{width:100%}}
-        @keyframes slideInLeft{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
-        @keyframes slideInRight{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
-        /* mobile base */
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
         @media(max-width:768px){
             .gooey-nav{display:none}.hamburger{display:flex}.mobile-menu{display:flex}
-            main{padding-top:80px}.container{padding:0 .8rem 3rem}
-        }
-
-        .intro-section{background:rgba(255,255,255,.04);border-radius:24px;padding:2rem;border:1px solid rgba(255,255,255,.1);margin-bottom:3rem;animation:fadeInUp .8s ease both;}
-        .intro-section h3{font-size:1.3rem;font-weight:700;color:var(--light);margin-bottom:1rem;}
-        .intro-section p{color:var(--text-muted);font-size:.95rem;line-height:1.8;margin-bottom:.6rem;}
-        .intro-section strong{color:var(--light);}
-        .section-title{font-size:clamp(1.3rem,3vw,1.8rem);color:var(--light);margin:2.5rem 0 1.5rem;font-weight:700;display:flex;align-items:center;gap:.6rem;}
-        .section-title .icon{font-size:1.4rem;}
-        .cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1rem;}
-        .topic-card{background:rgba(255,255,255,.04);backdrop-filter:blur(20px);border-radius:20px;padding:1.8rem;border:1px solid rgba(255,255,255,.1);transition:all .3s;animation:fadeInUp .8s ease both;}
-        .topic-card:hover{background:rgba(255,255,255,.07);transform:translateY(-4px);}
-        .topic-card h3{font-size:1.05rem;font-weight:700;color:var(--light);margin-bottom:1rem;}
-        .topic-card ul{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
-        .topic-card li{color:var(--text-muted);font-size:.88rem;padding-left:1.2rem;position:relative;line-height:1.5;}
-        .topic-card li::before{content:'▸';position:absolute;left:0;color:var(--primary);}
-        .sources-section{margin-bottom:3rem;}
-        .sources-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:1.5rem;}
-        .source-card{background:rgba(255,255,255,.04);border-radius:20px;padding:1.5rem;border:1px solid rgba(255,255,255,.08);}
-        .source-card h4{font-size:1rem;font-weight:700;color:var(--light);margin-bottom:1rem;}
-        .source-card ul{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
-        .source-card li{font-size:.88rem;}
-        .source-card a{color:var(--text-muted);text-decoration:none;transition:color .2s;}
-        .source-card a:hover{color:var(--primary);}
-        .download-section{text-align:center;background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(236,72,153,.1));border-radius:24px;padding:3rem 2rem;border:1px solid rgba(255,255,255,.1);margin-top:3rem;animation:fadeInUp .8s ease .4s both;}
-        .download-section h3{font-size:2rem;margin-bottom:1.5rem;color:var(--light);}
-        .download-section p{color:var(--text-muted);margin-bottom:2rem;font-size:1.1rem;}
-        @media(max-width:768px){
-            .cards-grid{grid-template-columns:1fr}
-            .sources-grid{grid-template-columns:1fr}
-            .topic-card{padding:1.2rem}
+            main{padding-top:80px}.container{padding:0 1rem 3rem}
+            .grid-2,.grid-3{grid-template-columns:1fr}
+            .topic-card,.push-card{padding:1.3rem}
             .download-section{padding:2rem 1.2rem}
         }
-</style>
+    </style>
 </head>
 <body>
 
@@ -113,7 +120,6 @@
     <spline-viewer url="https://prod.spline.design/PZ3znCVOWL0HGcDy/scene.splinecode"></spline-viewer>
 </div>
 <div class="overlay"></div>
-
 
 <header>
     <nav class="gooey-nav">
@@ -129,6 +135,7 @@
         <span></span><span></span><span></span>
     </button>
 </header>
+
 <div class="mobile-menu" id="mobileMenu">
     <a href="index.html">Accueil</a>
     <a href="formation.html">Formation</a>
@@ -140,98 +147,151 @@
 
 <main>
   <div class="container">
+
     <div class="page-header">
-      <h1>Veille Technologique</h1>
-      <p>Surveillance et analyse des évolutions techniques dans le domaine IT</p>
+        <div class="page-label">BTS SIO SISR</div>
+        <h1>Veille Technologique</h1>
+        <p>Surveillance et analyse des évolutions NVIDIA dans les infrastructures IT</p>
     </div>
-    <div class="intro-section">
-      <h3>Qu'est-ce que la veille technologique ?</h3>
-      <p>La veille technologique consiste à surveiller, analyser et exploiter les évolutions techniques afin d'anticiper les changements et d'adapter les systèmes informatiques. Elle permet aux professionnels IT de rester à jour, d'améliorer la sécurité et d'optimiser les infrastructures.</p>
-      <p>Dans le cadre de mon BTS SIO, j'ai mis en place une veille <strong>manuelle (Pull)</strong> et <strong>automatique (Push)</strong>.</p>
+
+    <div style="text-align:center;">
+        <div class="nvidia-badge">Sujet unique : NVIDIA — GPU &amp; Infrastructures IA</div>
     </div>
-    <h2 class="section-title"><span class="icon">🔍</span> Veille Manuelle (Pull)</h2>
-    <div class="cards-grid">
-      <div class="topic-card">
-        <h3>🧠 GPU NVIDIA & Infrastructures IA</h3>
-        <ul>
-          <li>GPU : calcul parallèle massif (CPU vs GPU)</li>
-          <li>Usages : IA, Machine Learning, Big Data, HPC</li>
-          <li>Virtualisation GPU (vGPU, VDI)</li>
-          <li>Frameworks : CUDA, TensorFlow, PyTorch</li>
-          <li>Gammes professionnelles : H100, H200</li>
-        </ul>
-      </div>
-      <div class="topic-card">
-        <h3>🏢 Enjeux pour les services IT</h3>
-        <ul>
-          <li>Intégration en datacenter (énergie, refroidissement)</li>
-          <li>Administration : nvidia-smi, supervision GPU</li>
-          <li>Orchestration avec Kubernetes</li>
-          <li>Coûts élevés et rentabilité à long terme</li>
-          <li>Souveraineté technologique européenne</li>
-        </ul>
-      </div>
+
+    <!-- INTRO -->
+    <div class="card intro-card">
+        <h3>Qu'est-ce que la veille technologique ?</h3>
+        <p>La veille technologique consiste à <strong>surveiller, analyser et exploiter les évolutions techniques</strong> afin d'anticiper les changements et d'adapter les systèmes informatiques. Elle permet aux professionnels IT de rester à jour, d'améliorer la sécurité et d'optimiser les infrastructures.</p>
+        <p>Dans le cadre de mon BTS SIO SISR, j'ai ciblé un sujet unique : <strong>NVIDIA et ses GPU dans les environnements professionnels et l'IA</strong>. J'ai mis en place une veille <strong>manuelle (Pull)</strong> — recherche active d'informations — et une veille <strong>automatique (Push)</strong> — réception d'alertes et flux d'informations.</p>
     </div>
-    <h2 class="section-title"><span class="icon">⚙️</span> Veille Automatique (Push)</h2>
-    <div class="cards-grid">
-      <div class="topic-card">
-        <h3>🔔 Google Alertes</h3>
-        <ul>
-          <li>Virtualisation</li><li>Conteneurisation</li>
-          <li>GPU & Datacenters</li><li>Vulnérabilités et correctifs</li>
-        </ul>
-      </div>
-      <div class="topic-card">
-        <h3>💻 Oracle VirtualBox</h3>
-        <ul>
-          <li>Hyperviseur de type 2</li><li>Utilisé en BTS SIO</li>
-          <li>Suivi des mises à jour</li><li>Compatibilité Windows / Linux</li><li>Alertes sécurité (CERT-FR)</li>
-        </ul>
-      </div>
+
+    <!-- PULL -->
+    <div class="section-title">
+        🔍 Veille Manuelle
+        <span class="section-label">Pull</span>
     </div>
-    <div class="sources-section">
-      <h2 class="section-title"><span class="icon">📚</span> Sources Utilisées</h2>
-      <div class="sources-grid">
-        <div class="source-card">
-          <h4>📰 Sites spécialisés</h4>
-          <ul>
-            <li><a href="https://www.lemondeinformatique.fr" target="_blank">Le Monde Informatique</a></li>
-            <li><a href="https://www.zdnet.fr" target="_blank">ZDNet France</a></li>
-            <li><a href="https://www.journaldunet.com" target="_blank">Journal du Net</a></li>
-            <li><a href="https://arxiv.org" target="_blank">ArXiv (recherche scientifique)</a></li>
-          </ul>
+
+    <div class="grid-2">
+        <div class="card topic-card">
+            <h4>🧠 GPU NVIDIA — Principes techniques</h4>
+            <ul>
+                <li>Calcul parallèle massif : différences CPU vs GPU</li>
+                <li>Architecture CUDA : cœurs, mémoire VRAM, bande passante</li>
+                <li>Gammes professionnelles : H100, H200, A100, RTX Ada</li>
+                <li>Frameworks associés : CUDA, TensorFlow, PyTorch</li>
+                <li>Usages : IA, Machine Learning, Big Data, HPC, rendu 3D</li>
+            </ul>
         </div>
-        <div class="source-card">
-          <h4>🔐 Sécurité</h4>
-          <ul>
-            <li><a href="https://www.cert.ssi.gouv.fr" target="_blank">CERT-FR (ANSSI)</a></li>
-            <li><a href="https://cve.mitre.org" target="_blank">CVE Mitre</a></li>
-            <li><a href="https://www.zataz.com" target="_blank">Zataz (cybersécurité)</a></li>
-          </ul>
+        <div class="card topic-card">
+            <h4>🏢 Intégration en infrastructure IT</h4>
+            <ul>
+                <li>Déploiement en datacenter : énergie, refroidissement, rack density</li>
+                <li>Virtualisation GPU : vGPU, VDI, NVIDIA AI Enterprise</li>
+                <li>Supervision : nvidia-smi, DCGM, Prometheus</li>
+                <li>Orchestration avec Kubernetes + NVIDIA GPU Operator</li>
+                <li>Coûts, ROI et souveraineté technologique européenne</li>
+            </ul>
         </div>
-        <div class="source-card">
-          <h4>🌐 Réseaux & médias</h4>
-          <ul>
-            <li><a href="https://twitter.com/nvidia" target="_blank">Twitter / X — NVIDIA</a></li>
-            <li><a href="https://twitter.com/NvidiaAI" target="_blank">Twitter / X — NVIDIA AI</a></li>
-            <li><a href="https://developer.nvidia.com" target="_blank">NVIDIA Developer</a></li>
-          </ul>
+        <div class="card topic-card">
+            <h4>🔐 Sécurité liée aux GPU NVIDIA</h4>
+            <ul>
+                <li>Suivi des CVE publiés sur les drivers NVIDIA</li>
+                <li>Mises à jour critiques via CERT-FR et NVIDIA Security Bulletins</li>
+                <li>Risques liés aux drivers vulnérables en environnement virtualisé</li>
+                <li>Bonnes pratiques de durcissement des hôtes GPU</li>
+            </ul>
         </div>
-      </div>
+        <div class="card topic-card">
+            <h4>📰 Actualité &amp; évolutions récentes</h4>
+            <ul>
+                <li>Annonces CES, GTC et événements NVIDIA annuels</li>
+                <li>Architecture Blackwell (B100, B200) — succession d'Hopper</li>
+                <li>Partenariats cloud : AWS, Azure, GCP avec instances GPU</li>
+                <li>Impact sur le marché IT et la stratégie des DSI</li>
+            </ul>
+        </div>
     </div>
+
+    <!-- PUSH -->
+    <div class="section-title">
+        ⚙️ Veille Automatique
+        <span class="section-label">Push</span>
+    </div>
+
+    <div class="grid-3">
+        <div class="card push-card">
+            <h4>Google Alertes</h4>
+            <span class="method-tag tag-alert">Alertes e-mail</span>
+            <ul>
+                <li>« NVIDIA GPU datacenter »</li>
+                <li>« NVIDIA driver vulnerability »</li>
+                <li>« NVIDIA IA infrastructure »</li>
+                <li>« NVIDIA Blackwell »</li>
+            </ul>
+        </div>
+        <div class="card push-card">
+            <h4>Flux RSS</h4>
+            <span class="method-tag tag-rss">RSS / Agrégateur</span>
+            <ul>
+                <li><a href="https://blogs.nvidia.com/feed/" target="_blank">NVIDIA Official Blog</a></li>
+                <li><a href="https://developer.nvidia.com/blog/feed" target="_blank">NVIDIA Developer Blog</a></li>
+                <li><a href="https://www.lemondeinformatique.fr/flux-rss.html" target="_blank">Le Monde Informatique</a></li>
+                <li><a href="https://www.zdnet.fr/feeds/rss/" target="_blank">ZDNet France</a></li>
+            </ul>
+        </div>
+        <div class="card push-card">
+            <h4>Réseaux sociaux</h4>
+            <span class="method-tag tag-social">Social / Abonnement</span>
+            <ul>
+                <li><a href="https://twitter.com/nvidia" target="_blank">X (Twitter) — NVIDIA</a></li>
+                <li><a href="https://twitter.com/NvidiaAI" target="_blank">X (Twitter) — NVIDIA AI</a></li>
+                <li><a href="https://www.linkedin.com/company/nvidia/" target="_blank">LinkedIn — NVIDIA</a></li>
+                <li><a href="https://www.youtube.com/@nvidia" target="_blank">YouTube — NVIDIA</a></li>
+            </ul>
+        </div>
+        <div class="card push-card">
+            <h4>CERT-FR / ANSSI</h4>
+            <span class="method-tag tag-cert">Alertes sécurité</span>
+            <ul>
+                <li><a href="https://www.cert.ssi.gouv.fr" target="_blank">cert.ssi.gouv.fr</a></li>
+                <li>Bulletins sur les drivers NVIDIA</li>
+                <li>Alertes vulnérabilités vGPU</li>
+            </ul>
+        </div>
+        <div class="card push-card">
+            <h4>CVE &amp; NVD</h4>
+            <span class="method-tag tag-cert">Base CVE</span>
+            <ul>
+                <li><a href="https://cve.mitre.org" target="_blank">CVE Mitre</a></li>
+                <li><a href="https://nvd.nist.gov" target="_blank">NVD — NIST</a></li>
+                <li>Filtres sur « vendor: NVIDIA »</li>
+            </ul>
+        </div>
+        <div class="card push-card">
+            <h4>NVIDIA Developer</h4>
+            <span class="method-tag tag-rss">Documentation officielle</span>
+            <ul>
+                <li><a href="https://developer.nvidia.com" target="_blank">developer.nvidia.com</a></li>
+                <li>Notes de version des drivers</li>
+                <li>Mises à jour SDK &amp; CUDA</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- DOWNLOAD -->
     <div class="download-section">
-      <h3>Documentation complète</h3>
-      <p>Téléchargez ma veille technologique détaillée au format PDF</p>
-      <a href="Veille_odf2.pdf" class="btn">📥 Télécharger ma veille complète (PDF)</a>
+        <h3>Documentation complète</h3>
+        <p>Téléchargez ma veille technologique détaillée au format PDF</p>
+        <a href="Veille_odf2.pdf" class="btn">📥 Télécharger ma veille complète (PDF)</a>
     </div>
+
   </div>
 </main>
 
 <footer>
     © 2026 – Portfolio Léo JACOB &nbsp;·&nbsp;
-    <a href="mentions.html">Mentions légales</a>
+    <a href="mentions-legales.html">Mentions légales</a>
 </footer>
-
 
 <svg width="0" height="0">
   <filter id="gooey">
@@ -241,7 +301,6 @@
     <feComposite in="SourceGraphic" in2="gooey" operator="atop"/>
   </filter>
 </svg>
-
 
 <script>
     const nav=document.querySelector('.gooey-nav');
