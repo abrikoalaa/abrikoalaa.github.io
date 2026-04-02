@@ -39,22 +39,9 @@
         .mobile-menu.visible a:nth-child(6){transition-delay:.30s}
         main{padding-top:120px;min-height:100vh;}
         .container{max-width:1100px;margin:0 auto;padding:0 2rem 5rem;}
-        footer {
-            text-align: center;
-            padding: 3rem 2rem;
-            color: #94a3b8;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            font-size: 0.9rem;
-        }
-
-        footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s;
-        }
-
-        footer a:hover { color: var(--accent); }
+        footer{text-align:center;padding:3rem 2rem;color:#94a3b8;border-top:1px solid rgba(255,255,255,0.08);font-size:.9rem;}
+        footer a{color:var(--primary);text-decoration:none;font-weight:600;transition:color .2s;}
+        footer a:hover{color:var(--accent);}
         .page-header{text-align:center;margin-bottom:3rem;animation:fadeInDown .8s ease;}
         .page-header h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;background:linear-gradient(135deg,var(--primary),var(--secondary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.8rem;}
         .page-header p{color:var(--text-muted);font-size:1.1rem;}
@@ -69,21 +56,30 @@
         @keyframes expandWidth{from{width:0}to{width:100%}}
         @keyframes slideInLeft{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
         @keyframes slideInRight{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
-        /* mobile base */
         @media(max-width:768px){
             .gooey-nav{display:none}.hamburger{display:flex}.mobile-menu{display:flex}
             main{padding-top:80px}.container{padding:0 .8rem 3rem}
         }
 
+        /* ── Layout ── */
         .projects-container{max-width:900px;margin:0 auto;padding:0 1.5rem 5rem;}
         .section-title{font-size:clamp(1.4rem,3vw,2rem);color:var(--light);margin:2.5rem 0 1rem;font-weight:700;}
+        .section-subtitle{color:var(--text-muted);margin-bottom:2rem;font-size:.95rem;}
+
+        /* ── Timeline ── */
         .timeline{position:relative;padding-left:2.5rem;}
         .timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--primary),var(--accent));opacity:.3;}
         .timeline-item{position:relative;margin-bottom:2.5rem;animation:fadeInUp .8s ease both;}
         .timeline-item:nth-child(2){animation-delay:.15s}.timeline-item:nth-child(3){animation-delay:.3s}.timeline-item:nth-child(4){animation-delay:.45s}
         .timeline-dot{position:absolute;left:-2rem;top:1.5rem;width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));box-shadow:0 0 16px rgba(99,102,241,.6);z-index:1;}
+
+        /* ── Cards ── */
         .project-card{background:rgba(255,255,255,.04);backdrop-filter:blur(20px);border-radius:24px;padding:2rem;border:1px solid rgba(255,255,255,.1);transition:all .3s;}
         .project-card:hover{background:rgba(255,255,255,.07);}
+
+        /* ── RP badge spécial ── */
+        .rp-badge{display:inline-flex;align-items:center;gap:.4rem;background:linear-gradient(135deg,rgba(99,102,241,.25),rgba(139,92,246,.25));border:1px solid rgba(99,102,241,.5);color:var(--primary);font-size:.78rem;font-weight:700;padding:.3rem .9rem;border-radius:999px;margin-bottom:1rem;letter-spacing:.04em;}
+
         .project-header{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem;}
         .project-icon{font-size:2rem;flex-shrink:0;}
         .project-header h3{font-size:1.3rem;font-weight:800;color:var(--light);line-height:1.3;}
@@ -99,6 +95,29 @@
         .stat-item{text-align:center;background:rgba(99,102,241,.08);border-radius:12px;padding:1rem;border:1px solid rgba(99,102,241,.2);}
         .stat-value{display:block;font-size:1.8rem;font-weight:800;color:var(--primary);}
         .stat-label{font-size:.78rem;color:var(--text-muted);font-weight:600;}
+
+        /* ── Tests block ── */
+        .tests-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem;margin-top:1rem;}
+        .test-item{background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.25);border-radius:12px;padding:.9rem 1rem;}
+        .test-item .test-label{font-size:.75rem;font-weight:700;color:#34d399;margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.05em;}
+        .test-item p{font-size:.83rem;color:var(--text-muted);line-height:1.5;}
+
+        /* ── Infra table ── */
+        .infra-table{width:100%;border-collapse:collapse;margin:1rem 0 1.2rem;font-size:.83rem;}
+        .infra-table th{text-align:left;padding:.5rem .8rem;color:var(--primary);font-weight:700;border-bottom:1px solid rgba(99,102,241,.2);}
+        .infra-table td{padding:.5rem .8rem;color:var(--text-muted);border-bottom:1px solid rgba(255,255,255,.05);}
+        .infra-table tr:hover td{background:rgba(255,255,255,.03);}
+
+        /* ── VLAN pills ── */
+        .vlan-list{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0 1.2rem;}
+        .vlan-pill{padding:.3rem .9rem;border-radius:999px;font-size:.78rem;font-weight:700;}
+        .vlan-10{background:rgba(99,102,241,.2);border:1px solid rgba(99,102,241,.4);color:#a5b4fc;}
+        .vlan-20{background:rgba(236,72,153,.15);border:1px solid rgba(236,72,153,.35);color:#f9a8d4;}
+        .vlan-99{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:#fcd34d;}
+
+        /* ── Divider ── */
+        .section-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(99,102,241,.35),transparent);margin:4rem 0;}
+
         @media(max-width:768px){
             .projects-container{padding:0 .8rem 3rem}
             .timeline{padding-left:1.5rem}
@@ -107,8 +126,9 @@
             .project-header h3{font-size:1.05rem}
             .stats-grid{gap:.6rem}
             .stat-value{font-size:1.4rem}
+            .tests-grid{grid-template-columns:1fr}
         }
-</style>
+    </style>
 </head>
 <body>
 
@@ -116,7 +136,6 @@
     <spline-viewer url="https://prod.spline.design/PZ3znCVOWL0HGcDy/scene.splinecode"></spline-viewer>
 </div>
 <div class="overlay"></div>
-
 
 <header>
     <nav class="gooey-nav">
@@ -143,12 +162,212 @@
 
 <main>
   <div class="projects-container">
+
+    <!-- ══ En-tête ══ -->
     <div class="page-header">
       <h1>Mes Projets & Réalisations</h1>
       <p>Découvrez mes expériences professionnelles et projets techniques</p>
     </div>
-    <h2 class="section-title">🎯 Infrastructure Réseau - C2M</h2>
-    <p style="color:var(--text-muted);margin-bottom:2rem;">Projets réalisés grâce au stage</p>
+
+    <!-- ══════════════════════════════════════════
+         SECTION 1 — RÉALISATIONS PROFESSIONNELLES E6
+    ══════════════════════════════════════════ -->
+    <h2 class="section-title">🏆 Réalisations Professionnelles — Épreuve E6</h2>
+    <p class="section-subtitle">Projets réalisés en Labo BTS SIO – Février / Mars 2026 – Option SISR</p>
+
+    <div class="timeline">
+
+      <!-- ── RP n°1 : RADIUS / 802.1X / VLAN ── -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="project-card">
+          <div class="rp-badge">📋 Réalisation Professionnelle n°1 · E6</div>
+          <div class="project-header">
+            <span class="project-icon">🔐</span>
+            <h3>Sécurisation des accès réseau filaire — 802.1X, RADIUS & VLAN dynamiques</h3>
+          </div>
+          <div class="project-meta">
+            <span class="meta-tag">🏢 GSB</span>
+            <span class="meta-tag">🌐 Réseau</span>
+            <span class="meta-tag">🔒 Sécurité</span>
+            <span class="meta-tag">📅 Fév – Mars 2026</span>
+          </div>
+
+          <p class="project-description">
+            Dans le cadre de la politique de sécurité de GSB (Galaxy Swiss Bourdin), toute personne
+            connectant un ordinateur sur une prise Ethernet accédait librement au réseau interne.
+            La solution déployée impose une authentification 802.1X via un serveur RADIUS (NPS) et
+            attribue automatiquement un VLAN selon le profil utilisateur, isolant les non-autorisés
+            dans un réseau invité.
+          </p>
+
+          <!-- Infrastructure -->
+          <p style="color:var(--light);font-weight:700;font-size:.85rem;margin-bottom:.5rem;">🖥️ Infrastructure déployée</p>
+          <table class="infra-table">
+            <thead><tr><th>Composant</th><th>Rôle</th><th>Adresse IP</th></tr></thead>
+            <tbody>
+              <tr><td>Switch HP ProCurve 2650</td><td>Authentification des ports 802.1X</td><td>—</td></tr>
+              <tr><td>Serveur AD (VM)</td><td>AD DS · DNS · NPS (RADIUS) · AD CS</td><td>192.168.1.10 /24</td></tr>
+              <tr><td>Client Autorisé</td><td>Poste Windows domaine <em>mars.local</em></td><td>192.168.1.20 /24</td></tr>
+              <tr><td>Client Refusé</td><td>Machine hors-domaine → VLAN invité</td><td>192.168.1.30 /24</td></tr>
+            </tbody>
+          </table>
+
+          <!-- VLANs -->
+          <p style="color:var(--light);font-weight:700;font-size:.85rem;margin-bottom:.5rem;">🔀 Segmentation VLAN</p>
+          <div class="vlan-list">
+            <span class="vlan-pill vlan-10">VLAN 10 — Service Administratif</span>
+            <span class="vlan-pill vlan-20">VLAN 20 — Service Commercial</span>
+            <span class="vlan-pill vlan-99">VLAN 99 — Réseau Invité</span>
+          </div>
+
+          <!-- Étapes -->
+          <p style="color:var(--light);font-weight:700;font-size:.85rem;margin-bottom:.4rem;">⚙️ Mise en œuvre</p>
+          <ul class="achievements-list">
+            <li>Création des groupes AD <em>Administratif</em> et <em>Commercial</em></li>
+            <li>Installation et enregistrement du rôle NPS dans Active Directory</li>
+            <li>Ajout du switch comme client RADIUS avec secret partagé</li>
+            <li>Déploiement d'une Autorité de Certification (AD CS) et certificat serveur</li>
+            <li>Activation 802.1X sur les ports du switch HP ProCurve — VLAN invité pour refus</li>
+            <li>Authentification MAC pour les imprimantes non compatibles 802.1X</li>
+            <li>Configuration PEAP / EAP-MSCHAPv2 sur les postes clients Windows</li>
+          </ul>
+
+          <!-- Technologies -->
+          <div class="skills-list">
+            <span class="skill-badge">802.1X</span>
+            <span class="skill-badge">RADIUS / NPS</span>
+            <span class="skill-badge">Active Directory</span>
+            <span class="skill-badge">AD CS / PKI</span>
+            <span class="skill-badge">PEAP / EAP-MSCHAPv2</span>
+            <span class="skill-badge">VLAN dynamiques</span>
+            <span class="skill-badge">HP ProCurve</span>
+            <span class="skill-badge">Windows Server</span>
+          </div>
+
+          <!-- Tests -->
+          <p style="color:var(--light);font-weight:700;font-size:.85rem;margin-bottom:.5rem;">✅ Tests réalisés</p>
+          <div class="tests-grid">
+            <div class="test-item">
+              <div class="test-label">Test 1 — Authentification</div>
+              <p>Connexion réussie → utilisateur placé automatiquement dans le VLAN correspondant.</p>
+            </div>
+            <div class="test-item">
+              <div class="test-label">Test 2 — Accès refusé</div>
+              <p>Machine non-autorisée → basculement automatique vers VLAN 99 Invité.</p>
+            </div>
+            <div class="test-item">
+              <div class="test-label">Test 3 — Journaux</div>
+              <p>Accès autorisé · événement enregistré dans la console RADIUS / Observateur d'événements.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── RP n°2 : Fail2Ban + rsyslog ── -->
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="project-card">
+          <div class="rp-badge">📋 Réalisation Professionnelle n°2 · E6</div>
+          <div class="project-header">
+            <span class="project-icon">🛡️</span>
+            <h3>Protection anti-brute force avec Fail2Ban & centralisation des journaux rsyslog</h3>
+          </div>
+          <div class="project-meta">
+            <span class="meta-tag">🏢 GSB</span>
+            <span class="meta-tag">🐧 Linux</span>
+            <span class="meta-tag">🔒 Sécurité</span>
+            <span class="meta-tag">📅 Fév – Mars 2026</span>
+          </div>
+
+          <p class="project-description">
+            Un audit interne de GSB a révélé l'absence de mécanisme de blocage automatique face aux
+            tentatives SSH répétées et aux attaques web automatisées. La solution déployée associe
+            Fail2Ban (bannissement d'IP) à une infrastructure rsyslog centralisée pour une supervision
+            complète des événements de sécurité.
+          </p>
+
+          <!-- Infrastructure VMs -->
+          <p style="color:var(--light);font-weight:700;font-size:.85rem;margin-bottom:.5rem;">🖥️ Environnement virtualisé</p>
+          <table class="infra-table">
+            <thead><tr><th>Machine</th><th>Rôle & Services</th><th>IP</th></tr></thead>
+            <tbody>
+              <tr><td>VM1 — Serveur Web</td><td>Apache · SSH · Fail2Ban · rsyslog</td><td>192.168.1.10 /24</td></tr>
+              <tr><td>VM2 — Serveur Fichiers</td><td>Samba · SSH · Fail2Ban · rsyslog</td><td>192.168.1.20 /24</td></tr>
+              <tr><td>VM3 — Client</td><td>Accès web, SSH, partage de fichiers</td><td>192.168.1.30 /24</td></tr>
+              <tr><td>VM4 — Attaquant</td><td>Simulation de brute force</td><td>192.168.1.40 /24</td></tr>
+              <tr><td>VM5 — Supervision</td><td>rsyslog — centralisation des journaux</td><td>192.168.1.50 /24</td></tr>
+            </tbody>
+          </table>
+
+          <!-- Politique de sécurité -->
+          <p style="color:var(--light);font-weight:700;font-size:.85rem;margin-bottom:.4rem;">🔏 Politique de sécurité</p>
+          <ul class="achievements-list">
+            <li>SSH (port 22) — accès réseau interne uniquement avec identifiants valides</li>
+            <li>HTTP (port 80) — accès libre en lecture via Apache (réseau local)</li>
+            <li>Samba (port 445) — accès restreint au client autorisé</li>
+            <li>rsyslog (port 514 UDP) — transmission automatique des journaux vers VM5</li>
+            <li>Fail2Ban — bannissement automatique des IP après tentatives répétées sur SSH / Apache</li>
+          </ul>
+
+          <!-- Étapes -->
+          <p style="color:var(--light);font-weight:700;font-size:.85rem;margin-bottom:.4rem;">⚙️ Mise en œuvre</p>
+          <ul class="achievements-list">
+            <li>Installation et configuration de Fail2Ban sur VM1 et VM2</li>
+            <li>Création de jails SSH et Apache (seuil de tentatives, durée de ban)</li>
+            <li>Configuration de rsyslog pour transmission UDP vers VM5 (serveur de supervision)</li>
+            <li>Mise en place du serveur de supervision (VM5) pour la centralisation des logs</li>
+            <li>Configuration de Samba pour le partage sécurisé de fichiers</li>
+          </ul>
+
+          <!-- Technologies -->
+          <div class="skills-list">
+            <span class="skill-badge">Fail2Ban</span>
+            <span class="skill-badge">rsyslog</span>
+            <span class="skill-badge">Apache</span>
+            <span class="skill-badge">Samba</span>
+            <span class="skill-badge">SSH</span>
+            <span class="skill-badge">Ubuntu Server</span>
+            <span class="skill-badge">iptables</span>
+            <span class="skill-badge">Supervision</span>
+          </div>
+
+          <!-- Tests -->
+          <p style="color:var(--light);font-weight:700;font-size:.85rem;margin-bottom:.5rem;">✅ Tests réalisés</p>
+          <div class="tests-grid">
+            <div class="test-item">
+              <div class="test-label">Test 1 — Connexion utilisateur</div>
+              <p>VM3 → SSH réussi sur VM1 & VM2, accès web et partage Samba fonctionnels.</p>
+            </div>
+            <div class="test-item">
+              <div class="test-label">Test 2 — Brute force</div>
+              <p>VM4 lance une attaque SSH → IP automatiquement bannie par Fail2Ban sur VM1 et VM2.</p>
+            </div>
+            <div class="test-item">
+              <div class="test-label">Test 3 — Journaux</div>
+              <p>VM5 reçoit et enregistre correctement les logs des deux serveurs en temps réel.</p>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="stats-grid" style="margin-top:1.5rem;">
+            <div class="stat-item"><span class="stat-value">5</span><span class="stat-label">VMs déployées</span></div>
+            <div class="stat-item"><span class="stat-value">2</span><span class="stat-label">Serveurs protégés</span></div>
+            <div class="stat-item"><span class="stat-value">3</span><span class="stat-label">Tests validés</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /timeline RP -->
+
+    <div class="section-divider"></div>
+
+    <!-- ══════════════════════════════════════════
+         SECTION 2 — STAGE C2M
+    ══════════════════════════════════════════ -->
+    <h2 class="section-title">🎯 Infrastructure Réseau — Stage C2M</h2>
+    <p class="section-subtitle">Projets réalisés lors du stage en entreprise</p>
+
     <div class="timeline">
       <div class="timeline-item">
         <div class="timeline-dot"></div>
@@ -211,23 +430,37 @@
         </div>
       </div>
     </div>
-    <h2 class="section-title" style="margin-top:4rem;">💡 Compétences Développées</h2>
+
+    <div class="section-divider"></div>
+
+    <!-- ══ Compétences globales ══ -->
+    <h2 class="section-title" style="margin-top:0;">💡 Compétences Développées</h2>
     <div class="project-card" style="margin-top:1.5rem;">
       <div class="skills-list" style="margin-bottom:0">
-        <span class="skill-badge">Infrastructure Réseau</span><span class="skill-badge">Technologie PoE</span>
-        <span class="skill-badge">Cisco Packet Tracer</span><span class="skill-badge">Cartographie Réseau</span>
-        <span class="skill-badge">Sécurité WiFi</span><span class="skill-badge">Gestion des canaux WiFi</span>
-        <span class="skill-badge">Diagnostic Hardware</span><span class="skill-badge">Documentation Technique</span>
+        <span class="skill-badge">802.1X / RADIUS</span>
+        <span class="skill-badge">VLAN dynamiques</span>
+        <span class="skill-badge">Active Directory</span>
+        <span class="skill-badge">PKI / Certificats</span>
+        <span class="skill-badge">Fail2Ban</span>
+        <span class="skill-badge">rsyslog</span>
+        <span class="skill-badge">Apache / Samba</span>
+        <span class="skill-badge">Infrastructure Réseau</span>
+        <span class="skill-badge">Technologie PoE</span>
+        <span class="skill-badge">Cisco Packet Tracer</span>
+        <span class="skill-badge">Cartographie Réseau</span>
+        <span class="skill-badge">Sécurité WiFi</span>
+        <span class="skill-badge">Diagnostic Hardware</span>
+        <span class="skill-badge">Documentation Technique</span>
       </div>
     </div>
-  </div>
+
+  </div><!-- /projects-container -->
 </main>
 
 <footer>
     © 2026 – Portfolio Léo JACOB &nbsp;·&nbsp;
     <a href="mentions.html">Mentions légales</a>
 </footer>
-
 
 <svg width="0" height="0">
   <filter id="gooey">
@@ -237,7 +470,6 @@
     <feComposite in="SourceGraphic" in2="gooey" operator="atop"/>
   </filter>
 </svg>
-
 
 <script>
     const nav=document.querySelector('.gooey-nav');
