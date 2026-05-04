@@ -151,18 +151,18 @@
     <div class="page-header">
         <div class="page-label">BTS SIO SISR</div>
         <h1>Veille Technologique</h1>
-        <p>Surveillance et analyse des évolutions NVIDIA dans les infrastructures IT</p>
+        <p>Surveillance, analyse et intégration des GPU NVIDIA en entreprise</p>
     </div>
 
     <div style="text-align:center;">
-        <div class="nvidia-badge">Sujet unique : NVIDIA — GPU &amp; Infrastructures IA</div>
+        <div class="nvidia-badge">Sujet unique : NVIDIA — GPU, Datacenters & Sécurité</div>
     </div>
 
     <!-- INTRO -->
     <div class="card intro-card">
         <h3>Qu'est-ce que la veille technologique ?</h3>
-        <p>La veille technologique consiste à <strong>surveiller, analyser et exploiter les évolutions techniques</strong> afin d'anticiper les changements et d'adapter les systèmes informatiques. Elle permet aux professionnels IT de rester à jour, d'améliorer la sécurité et d'optimiser les infrastructures.</p>
-        <p>Dans le cadre de mon BTS SIO SISR, j'ai ciblé un sujet unique : <strong>NVIDIA et ses GPU dans les environnements professionnels et l'IA</strong>. J'ai mis en place une veille <strong>manuelle (Pull)</strong> — recherche active d'informations — et une veille <strong>automatique (Push)</strong> — réception d'alertes et flux d'informations.</p>
+        <p>La veille technologique consiste à <strong>surveiller, analyser et exploiter les évolutions techniques</strong> pour anticiper les changements et adapter les infrastructures. Dans l'IT, ne pas se tenir informé, c'est prendre le risque de devenir obsolète.</p>
+        <p>J'ai mis en place un processus structuré combinant une veille <strong>manuelle (Pull)</strong> — recherche ciblée et approfondie — et une veille <strong>automatique (Push)</strong> — réception d'alertes et de flux temps réel. Mon sujet central : <strong>L'intégration des GPU NVIDIA dans les datacenters</strong>, vu sous le prisme de l'administration et de la sécurité.</p>
     </div>
 
     <!-- PULL -->
@@ -173,41 +173,39 @@
 
     <div class="grid-2">
         <div class="card topic-card">
-            <h4>🧠 GPU NVIDIA — Principes techniques</h4>
+            <h4>🧠 Rôle du GPU en infrastructure</h4>
             <ul>
-                <li>Calcul parallèle massif : différences CPU vs GPU</li>
-                <li>Architecture CUDA : cœurs, mémoire VRAM, bande passante</li>
-                <li>Gammes professionnelles : H100, H200, A100, RTX Ada</li>
-                <li>Frameworks associés : CUDA, TensorFlow, PyTorch</li>
-                <li>Usages : IA, Machine Learning, Big Data, HPC, rendu 3D</li>
+                <li>Calcul parallèle massif : la différence fondamentale avec les architectures CPU classiques.</li>
+                <li>Usages professionnels : Deep Learning, Big Data, HPC et virtualisation lourde (VDI).</li>
+                <li>Gammes critiques : H100, H200, A100 et l'arrivée de l'architecture Blackwell.</li>
+                <li>Écosystème logiciel : dépendance à CUDA, TensorFlow et PyTorch.</li>
             </ul>
         </div>
         <div class="card topic-card">
-            <h4>🏢 Intégration en infrastructure IT</h4>
+            <h4>🏢 Défis d'intégration (SISR)</h4>
             <ul>
-                <li>Déploiement en datacenter : énergie, refroidissement, rack density</li>
-                <li>Virtualisation GPU : vGPU, VDI, NVIDIA AI Enterprise</li>
-                <li>Supervision : nvidia-smi, DCGM, Prometheus</li>
-                <li>Orchestration avec Kubernetes + NVIDIA GPU Operator</li>
-                <li>Coûts, ROI et souveraineté technologique européenne</li>
+                <li><strong>Physique :</strong> Consommation électrique extrême et nécessité de refroidissement avancé en baie.</li>
+                <li><strong>Admin :</strong> Monitoring via nvidia-smi, DCGM et orchestration Kubernetes (GPU Operator).</li>
+                <li><strong>Virtualisation :</strong> Gestion des licences vGPU et déploiement de postes distants gourmands.</li>
+                <li><strong>Stratégie :</strong> ROI colossal et enjeux de souveraineté technologique face au monopole NVIDIA.</li>
             </ul>
         </div>
         <div class="card topic-card">
-            <h4>🔐 Sécurité liée aux GPU NVIDIA</h4>
+            <h4>🔐 Sécurité des environnements GPU</h4>
             <ul>
-                <li>Suivi des CVE publiés sur les drivers NVIDIA</li>
-                <li>Mises à jour critiques via CERT-FR et NVIDIA Security Bulletins</li>
-                <li>Risques liés aux drivers vulnérables en environnement virtualisé</li>
-                <li>Bonnes pratiques de durcissement des hôtes GPU</li>
+                <li>Les pilotes NVIDIA possèdent des failles critiques (CVE) souvent sous-estimées.</li>
+                <li>Suivi rigoureux des bulletins de sécurité NVIDIA et des alertes CERT-FR/ANSSI.</li>
+                <li>Risques spécifiques d'élévation de privilèges en environnement virtualisé (vGPU).</li>
+                <li>Mise en place de politiques de durcissement et de patch management pour les hôtes GPU.</li>
             </ul>
         </div>
         <div class="card topic-card">
-            <h4>📰 Actualité &amp; évolutions récentes</h4>
+            <h4>📰 Veille marché & actualités</h4>
             <ul>
-                <li>Annonces CES, GTC et événements NVIDIA annuels</li>
-                <li>Architecture Blackwell (B100, B200) — succession d'Hopper</li>
-                <li>Partenariats cloud : AWS, Azure, GCP avec instances GPU</li>
-                <li>Impact sur le marché IT et la stratégie des DSI</li>
+                <li>Suivi des événements majeurs : CES, GTC (NVIDIA GTC Conference).</li>
+                <li>Analyse de la transition de l'architecture Hopper (H100) vers Blackwell (B200).</li>
+                <li>Évolution des offres Cloud (AWS, Azure, GCP) et de leurs instances GPU dédiées.</li>
+                <li>Impact macro-économique sur les stratégies d'achat des DSI.</li>
             </ul>
         </div>
     </div>
@@ -230,7 +228,7 @@
             </ul>
         </div>
         <div class="card push-card">
-            <h4>Flux RSS</h4>
+            <h4>Flux RSS & Médias</h4>
             <span class="method-tag tag-rss">RSS / Agrégateur</span>
             <ul>
                 <li><a href="https://blogs.nvidia.com/feed/" target="_blank">NVIDIA Official Blog</a></li>
@@ -254,17 +252,17 @@
             <span class="method-tag tag-cert">Alertes sécurité</span>
             <ul>
                 <li><a href="https://www.cert.ssi.gouv.fr" target="_blank">cert.ssi.gouv.fr</a></li>
-                <li>Bulletins sur les drivers NVIDIA</li>
+                <li>Bulletins spécifiques aux drivers NVIDIA</li>
                 <li>Alertes vulnérabilités vGPU</li>
             </ul>
         </div>
         <div class="card push-card">
-            <h4>CVE &amp; NVD</h4>
+            <h4>CVE & NVD</h4>
             <span class="method-tag tag-cert">Base CVE</span>
             <ul>
                 <li><a href="https://cve.mitre.org" target="_blank">CVE Mitre</a></li>
                 <li><a href="https://nvd.nist.gov" target="_blank">NVD — NIST</a></li>
-                <li>Filtres sur « vendor: NVIDIA »</li>
+                <li>Filtres automatisés : « vendor: NVIDIA »</li>
             </ul>
         </div>
         <div class="card push-card">
@@ -272,16 +270,53 @@
             <span class="method-tag tag-rss">Documentation officielle</span>
             <ul>
                 <li><a href="https://developer.nvidia.com" target="_blank">developer.nvidia.com</a></li>
-                <li>Notes de version des drivers</li>
-                <li>Mises à jour SDK &amp; CUDA</li>
+                <li>Notes de version des drivers Grid/vGPU</li>
+                <li>Releases des SDK & CUDA Toolkit</li>
             </ul>
         </div>
+    </div>
+
+    <!-- NOUVELLE SECTION : EXEMPLES D'ALERTE (Remplace les captures d'écran) -->
+    <div class="section-title">
+        📬 Exemples d'alertes récentes (Veille Active)
+        <span class="section-label">Résultats</span>
+    </div>
+
+    <div class="grid-2" style="margin-bottom: 2.5rem;">
+        <div class="card topic-card" style="border-left: 3px solid var(--accent);">
+            <h4>🚨 Alerte Sécurité (CVE)</h4>
+            <p style="color:var(--text-muted); font-size:.9rem; line-height:1.7; margin-bottom:0;">
+                <strong style="color:#f9a8d4;">Source :</strong> Google Alert (Février 2025)<br>
+                <strong style="color:var(--light);">Information :</strong> Réception d'une alerte concernant une CVE de haute sévérité sur un pilote NVIDIA permettant une élévation de privilèges locales. 
+                <strong style="color:var(--light);">Action SISR :</strong> Vérification immédiate des versions déployées en entreprise et planification d'un correctif si la version est impactée.
+            </p>
+        </div>
+        <div class="card topic-card" style="border-left: 3px solid var(--nvidia);">
+            <h4>☁️ Alerte Infrastructure (Cloud)</h4>
+            <p style="color:var(--text-muted); font-size:.9rem; line-height:1.7; margin-bottom:0;">
+                <strong style="color:#a3d44f;">Source :</strong> Flux RSS Azure / Google Alert (Mars 2025)<br>
+                <strong style="color:var(--light);">Information :</strong> Annonce de la disponibilité prochaine des instances Azure basées sur l'architecture Blackwell (ND GB200). 
+                <strong style="color:var(--light);">Action SISR :</strong> Anticipation des futurs besoins de refroidissement et de la migration potentielle des workloads IA vers ces nouvelles instances.
+            </p>
+        </div>
+    </div>
+
+    <!-- NOUVELLE SECTION : ANALYSE PERSONNELLE -->
+    <div class="section-title">
+        💡 Analyse personnelle
+        <span class="section-label">Recul critique</span>
+    </div>
+
+    <div class="card intro-card" style="margin-bottom: 2.5rem;">
+        <h3>Ce que j'en retire pour mon métier</h3>
+        <p>Mener cette veille m'a fait prendre conscience de l'évolution du métier d'administrateur systèmes. Aujourd'hui, gérer des serveurs Windows ou Linux "classiques" ne suffit plus. Un profil SISR doit désormais comprendre l'accélération matérielle pour savoir l'intégrer de façon sécurisée.</p>
+        <p>J'ai également réalisé que <strong>la cybersécurité touche toutes les couches de l'infrastructure</strong>, y compris le matériel. Un pilote de carte graphique non mis à jour peut devenir un vecteur d'attaque majeur dans un datacenter virtualisé. C'est un réflexe d'analyse des menaces que je conserverai tout au long de ma carrière.</p>
     </div>
 
     <!-- DOWNLOAD -->
     <div class="download-section">
         <h3>Documentation complète</h3>
-        <p>Téléchargez ma veille technologique détaillée au format PDF</p>
+        <p>Téléchargez mon dossier de veille technologique détaillé avec l'analyse complète au format PDF</p>
         <a href="Veille_odf2.pdf" class="btn">📥 Télécharger ma veille complète (PDF)</a>
     </div>
 
