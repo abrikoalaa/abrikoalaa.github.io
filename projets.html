@@ -191,92 +191,91 @@
     <div class="timeline">
 
       <!-- ── RP n°1 : RADIUS / 802.1X / VLAN ── -->
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="project-card">
-          <div class="rp-badge">📋 Réalisation Professionnelle n°1 · E6</div>
-          <div class="project-header">
-            <span class="project-icon">🔐</span>
-            <h3>Sécurisation des accès réseau filaire — 802.1X, RADIUS & VLAN dynamiques</h3>
-          </div>
-          <div class="project-meta">
-            <span class="meta-tag">🏢 GSB</span>
-            <span class="meta-tag">🌐 Réseau</span>
-            <span class="meta-tag">🔒 Sécurité</span>
-            <span class="meta-tag">📅 Fév – Mars 2026</span>
-          </div>
+      <!-- ── RP n°2 : Apache HA / Heartbeat / DRBD ── -->
+<div class="timeline-item">
+  <div class="timeline-dot"></div>
+  <div class="project-card">
+    <div class="rp-badge">📋 Réalisation Professionnelle n°2 · E6</div>
+    <div class="project-header">
+      <span class="project-icon">🖥️</span>
+      <h3>Haute disponibilité Apache — Heartbeat, DRBD &amp; résolution DNS interne</h3>
+    </div>
+    <div class="project-meta">
+      <span class="meta-tag">🏢 GSB</span>
+      <span class="meta-tag">🌐 Réseau</span>
+      <span class="meta-tag">⚡ Haute Dispo</span>
+      <span class="meta-tag">📅 Fév – Mars 2026</span>
+    </div>
 
-          <p class="project-description">
-            Dans le cadre de la politique de sécurité de GSB (Galaxy Swiss Bourdin), toute personne
-            connectant un ordinateur sur une prise Ethernet accédait librement au réseau interne.
-            La solution déployée impose une authentification 802.1X via un serveur RADIUS (NPS) et
-            attribue automatiquement un VLAN selon le profil utilisateur, isolant les non-autorisés
-            dans un réseau invité.
-          </p>
+    <p class="project-description">
+      L'entreprise GSB héberge des applications web critiques ne tolérant aucune interruption de service.
+      J'ai conçu une solution de Haute Disponibilité en architecture <strong>Active/Passif</strong> :
+      la réplication des données s'effectue au niveau bloc via <strong>DRBD (protocole C)</strong> —
+      totalement transparente pour Apache — tandis que <strong>Heartbeat</strong> surveille les nœuds
+      et attribue automatiquement l'IP virtuelle au serveur actif. Un serveur
+      <strong>DNS Windows Server 2019</strong> abstrait l'adresse par le nom
+      <code>www.gsb.local</code>.
+    </p>
 
-          <!-- Infrastructure -->
-          <p style="color:var(--light);font-weight:700;font-size:.85rem;margin-bottom:.5rem;">🖥️ Infrastructure déployée</p>
-          <table class="infra-table">
-            <thead><tr><th>Composant</th><th>Rôle</th><th>Adresse IP</th></tr></thead>
-            <tbody>
-              <tr><td>Switch HP ProCurve 2650</td><td>Authentification des ports 802.1X</td><td>—</td></tr>
-              <tr><td>Serveur AD (VM)</td><td>AD DS · DNS · NPS (RADIUS) · AD CS</td><td>192.168.1.10 /24</td></tr>
-              <tr><td>Client Autorisé</td><td>Poste Windows domaine <em>mars.local</em></td><td>192.168.1.20 /24</td></tr>
-              <tr><td>Client Refusé</td><td>Machine hors-domaine → VLAN invité</td><td>192.168.1.30 /24</td></tr>
-            </tbody>
-          </table>
+    <!-- Infrastructure -->
+    <p style="color:var(--light);font-weight:700;font-size:.85rem;margin-bottom:.5rem;">🖥️ Infrastructure déployée</p>
+    <table class="infra-table">
+      <thead>
+        <tr><th>Composant</th><th>Rôle</th><th>Adresse IP</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>srv1 — Ubuntu Server (VM)</td><td>Nœud actif Apache · DRBD Primary · Heartbeat</td><td>192.168.1.10 /24</td></tr>
+        <tr><td>srv2 — Ubuntu Server (VM)</td><td>Nœud passif · DRBD Secondary · failover cible</td><td>192.168.10.11 /24</td></tr>
+        <tr><td>IP Virtuelle (VIP)</td><td>Flottante — toujours portée par le nœud actif</td><td>192.168.10.100 /24</td></tr>
+        <tr><td>DNS — Windows Server 2019</td><td>Zone directe <code>gsb.local</code> → VIP</td><td>192.168.10.13 /24</td></tr>
+        <tr><td>Client — Ubuntu Desktop</td><td>Poste de test navigateur + ping</td><td>192.168.10.12 /24</td></tr>
+      </tbody>
+    </table>
 
-          <!-- VLANs -->
-          <p style="color:var(--light);font-weight:700;font-size:.85rem;margin-bottom:.5rem;">🔀 Segmentation VLAN</p>
-          <div class="vlan-list">
-            <span class="vlan-pill vlan-10">VLAN 10 — Service Administratif</span>
-            <span class="vlan-pill vlan-20">VLAN 20 — Service Commercial</span>
-            <span class="vlan-pill vlan-99">VLAN 99 — Réseau Invité</span>
-          </div>
+    <!-- Étapes -->
+    <p style="color:var(--light);font-weight:700;font-size:.85rem;margin-bottom:.4rem;">⚙️ Mise en œuvre</p>
+    <ul class="achievements-list">
+      <li>Partitionnement du disque <code>/dev/sdb1</code> via fdisk sur srv1, puis clonage en srv2</li>
+      <li>Configuration DRBD (protocole C) — fichier ressource <code>dirpartage.res</code>, initialisation et synchronisation initiale</li>
+      <li>Format ext4 du volume DRBD et montage sur <code>/mnt/sharefs</code></li>
+      <li>Configuration Heartbeat : <code>authkeys</code> (crc, chmod 600), <code>ha.cf</code> (keepalive 2s / deadtime 10s), <code>haresources</code></li>
+      <li>Ordre de bascule : IP virtuelle → DRBD Primary → montage → Apache2</li>
+      <li>DNS Windows Server 2019 : zone <code>gsb.local</code>, enregistrement A <code>www → 192.168.10.100</code></li>
+      <li>Activation <code>auto_failback on</code> — srv1 reprend le rôle actif à son retour</li>
+    </ul>
 
-          <!-- Étapes -->
-          <p style="color:var(--light);font-weight:700;font-size:.85rem;margin-bottom:.4rem;">⚙️ Mise en œuvre</p>
-          <ul class="achievements-list">
-            <li>Création des groupes AD <em>Administratif</em> et <em>Commercial</em></li>
-            <li>Installation et enregistrement du rôle NPS dans Active Directory</li>
-            <li>Ajout du switch comme client RADIUS avec secret partagé</li>
-            <li>Déploiement d'une Autorité de Certification (AD CS) et certificat serveur</li>
-            <li>Activation 802.1X sur les ports du switch HP ProCurve — VLAN invité pour refus</li>
-            <li>Authentification MAC pour les imprimantes non compatibles 802.1X</li>
-            <li>Configuration PEAP / EAP-MSCHAPv2 sur les postes clients Windows</li>
-          </ul>
+    <!-- Technologies -->
+    <div class="skills-list">
+      <span class="skill-badge">Apache2</span>
+      <span class="skill-badge">DRBD (protocole C)</span>
+      <span class="skill-badge">Heartbeat</span>
+      <span class="skill-badge">IP Virtuelle (VIP)</span>
+      <span class="skill-badge">Active/Passif HA</span>
+      <span class="skill-badge">DNS Windows Server</span>
+      <span class="skill-badge">Ubuntu Server</span>
+      <span class="skill-badge">Netplan</span>
+      <span class="skill-badge">systemctl / fdisk</span>
+    </div>
 
-          <!-- Technologies -->
-          <div class="skills-list">
-            <span class="skill-badge">802.1X</span>
-            <span class="skill-badge">RADIUS / NPS</span>
-            <span class="skill-badge">Active Directory</span>
-            <span class="skill-badge">AD CS / PKI</span>
-            <span class="skill-badge">PEAP / EAP-MSCHAPv2</span>
-            <span class="skill-badge">VLAN dynamiques</span>
-            <span class="skill-badge">HP ProCurve</span>
-            <span class="skill-badge">Windows Server</span>
-          </div>
-
-          <!-- Tests -->
-          <p style="color:var(--light);font-weight:700;font-size:.85rem;margin-bottom:.5rem;">✅ Tests réalisés</p>
-          <div class="tests-grid">
-            <div class="test-item">
-              <div class="test-label">Test 1 — Authentification</div>
-              <p>Connexion réussie → utilisateur placé automatiquement dans le VLAN correspondant.</p>
-            </div>
-            <div class="test-item">
-              <div class="test-label">Test 2 — Accès refusé</div>
-              <p>Machine non-autorisée → basculement automatique vers VLAN 99 Invité.</p>
-            </div>
-            <div class="test-item">
-              <div class="test-label">Test 3 — Journaux</div>
-              <p>Accès autorisé · événement enregistré dans la console RADIUS / Observateur d'événements.</p>
-            </div>
-          </div>
-        </div>
+    <!-- Tests -->
+    <p style="color:var(--light);font-weight:700;font-size:.85rem;margin-bottom:.5rem;">✅ Tests réalisés</p>
+    <div class="tests-grid">
+      <div class="test-item">
+        <div class="test-label">Test 1 — DNS &amp; Web</div>
+        <p>Accès à <code>www.gsb.local</code> → page « Serveur 1 actif » affichée depuis le client.</p>
       </div>
+      <div class="test-item">
+        <div class="test-label">Test 2 — Réplication DRBD</div>
+        <p>Fichier créé dans <code>/mnt/sharefs</code> sur srv1 → présent sur srv2 après basculement forcé.</p>
+      </div>
+      <div class="test-item">
+        <div class="test-label">Test 3 — Failover</div>
+        <p>Arrêt Heartbeat sur srv1 → en ~10 s le client affiche « Serveur 2 actif » sans changer d'URL.</p>
+      </div>
+    </div>
 
+  </div>
+</div>
       <!-- ── RP n°2 : Fail2Ban + rsyslog ── -->
       <div class="timeline-item">
         <div class="timeline-dot"></div>
